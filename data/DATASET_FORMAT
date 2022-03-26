@@ -1,0 +1,12 @@
+
+DATA {
+    LINE [
+        {
+            ADMISSION,
+            TRIAGE_BEGIN,
+            TRIAGE_END,
+            DOCTOR_BEGIN,
+            DOCTOR_END
+        }
+    ]
+}
