@@ -30,31 +30,6 @@ void occupation(const DATASET data, int id, int fd, pid_t pid) {
 
 }
 
-ssize_t n_years_dataset (DATASET data) {
-
-    // get first timestamp
-    size_t first_ts = data.lines->areas_timestamps[0];
-    size_t last_ts = 0;
-
-    // get last valid timestamp
-    for (ssize_t i = data.num_lines - 1; i >= 0; i--) {
-        for (ssize_t j = NUM_ROOMS; j >= 0; j--) {
-            last_ts = data.lines[i].areas_timestamps[j];
-            if (last_ts != NOT_VALID_TIMESTAMP) {
-                break;
-            }
-        }
-        if (last_ts != NOT_VALID_TIMESTAMP) {
-            break;
-        }
-    }
-
-    ssize_t years = (last_ts - first_ts) / ONE_YEAR_UNIX_TS;
-
-    // include current year
-    return years + 1;
-}
-
 void write_to_fd (int id, uint32_t timestamp, const char* room, int occupation,
                   int fd, pid_t pid) {
 
@@ -76,40 +51,3 @@ void write_to_fd (int id, uint32_t timestamp, const char* room, int occupation,
 
 }
 
-ssize_t readn(int fd, void *ptr, size_t n) {
-    size_t nleft;
-    ssize_t nread;
-    nleft = n;
-    while (nleft > 0) {
-        if ((nread = read(fd, ptr, nleft)) < 0) {
-            if (nleft == n)
-                return(-1); /* error, return -1 */
-            else
-                break; /* error, return amount read so far */
-        } else if (nread == 0) {
-            break; /* EOF */
-        }
-        nleft -= nread;
-        ptr += nread;
-    }
-    return(n - nleft); /* return >= 0 */
-}
-
-ssize_t writen(int fd, const void *ptr, size_t n) {
-    size_t nleft;
-    ssize_t nwritten;
-    nleft = n;
-    while (nleft > 0) {
-        if ((nwritten = write(fd, ptr, nleft)) < 0) {
-            if (nleft == n)
-                return(-1); /* error, return -1 */
-            else
-                break; /* error, return amount written so far */
-        } else if (nwritten == 0) {
-            break;
-        }
-        nleft -= nwritten;
-        ptr += nwritten;
-    }
-    return(n - nleft); /* return >= 0 */
-}

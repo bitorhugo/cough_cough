@@ -6,6 +6,8 @@
 
 #include "parser/parser.h"
 #include "occupation/occupation.h"
+#include "requisites/C_a/C_a.h"
+#include "requisites/C_b/C_b.h"
 
 // EC 4.d
 
@@ -40,9 +42,6 @@ int main(int argc, char** argv) {
     time = clock() - time;
     printf("load data done in %f(s)\n", ((double)time)/CLOCKS_PER_SEC);
 
-    // get number of years in DATASET
-    ssize_t M_processes = n_years_dataset(data);
-
     // array of children pid(s)
     int pids [N_processes];
 
@@ -74,7 +73,7 @@ int main(int argc, char** argv) {
                 exit(EXIT_FAILURE);
             }
 
-            for (size_t j = i; j <= data.num_lines; j += N_processes) {
+            for (size_t j = i; j < data.num_lines; j += N_processes) {
                 occupation(data, j, fd_pipe[1], getpid());
             }
             // implicitly close write-end from pipe using exit()
@@ -97,17 +96,9 @@ int main(int argc, char** argv) {
         exit (EXIT_FAILURE);
     }
 
-    // read from pipe
-    ssize_t bytes_read = 0;
-    char buffer [PIPE_SZ];
-    memset(buffer, 0, PIPE_SZ);
+    from_parent_to_file(fd_out, fd_pipe);
 
-    while((bytes_read = readn(fd_pipe[0], buffer, sizeof (buffer))) > 0) {
-        if (writen(fd_out, buffer, bytes_read) < 0) {
-            perror("write failed\n");
-            exit(EXIT_FAILURE);
-        }
-    }
+    from_parent_to_M_processes (fd_out, fd_pipe, n_years_dataset(data));
 
     exit(EXIT_SUCCESS);
 }
