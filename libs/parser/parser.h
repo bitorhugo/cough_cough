@@ -23,7 +23,6 @@ typedef struct line {
 typedef struct dataset {
     LINE *lines;
     uint32_t num_lines;
-    uint16_t num_years;
 }DATASET;
 
 /**

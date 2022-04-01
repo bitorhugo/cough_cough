@@ -8,6 +8,9 @@
 #ifndef COUGH_COUGH_I_O_H
 #define COUGH_COUGH_I_O_H
 
+#define WRITE_END 1
+#define READ_END 0
+
 /**
  * reads from File Descriptor
  * @param fd file descriptor to read from

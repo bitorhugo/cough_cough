@@ -14,6 +14,8 @@
  */
 ssize_t n_years_dataset (DATASET data);
 
-void from_parent_to_M_processes (int fd_out, int *fd_pipe, size_t years);
+void from_parent_to_M_processes (int *fd_pipe, size_t M);
+
+void handler (int SIG);
 
 #endif //COUGH_COUGH_C_B_H

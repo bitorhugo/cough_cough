@@ -42,6 +42,15 @@ int main(int argc, char** argv) {
     time = clock() - time;
     printf("load data done in %f(s)\n", ((double)time)/CLOCKS_PER_SEC);
 
+    // open file for writing
+    int fd_out = open(output_path,
+                      O_WRONLY | O_APPEND | O_TRUNC | O_CREAT,
+                      S_IXUSR | S_IWUSR | S_IRUSR);
+    if (fd_out < 0) {
+        perror("open failed\n");
+        exit (EXIT_FAILURE);
+    }
+
     // array of children pid(s)
     int pids [N_processes];
 
@@ -68,13 +77,15 @@ int main(int argc, char** argv) {
         // child code
         if (pid == 0) {
             // child process will only write to pipe -> close read-end from pipe
-            if (close(fd_pipe[0]) < 0) {
+            if (close(fd_pipe[READ_END]) < 0) {
                 perror("close failed\n");
                 exit(EXIT_FAILURE);
             }
 
             for (size_t j = i; j < data.num_lines; j += N_processes) {
-                occupation(data, j, fd_pipe[1], getpid());
+                // write to fd_out/fd_pipe
+                //occupation(data, j, fd_out, getpid());
+                occupation(data, j, fd_pipe[WRITE_END], getpid());
             }
             // implicitly close write-end from pipe using exit()
             exit(EXIT_SUCCESS);
@@ -82,23 +93,14 @@ int main(int argc, char** argv) {
     }
 
     // parent process will only read from pipe -> close write-end from pipe
-    if (close(fd_pipe[1]) < 0) {
+    if (close(fd_pipe[WRITE_END]) < 0) {
         perror("close failed\n");
         exit(EXIT_FAILURE);
     }
 
-    // open file for writing
-    int fd_out = open(output_path,
-                      O_WRONLY | O_APPEND | O_TRUNC | O_CREAT,
-                      S_IXUSR | S_IWUSR | S_IRUSR);
-    if (fd_out < 0) {
-        perror("open failed\n");
-        exit (EXIT_FAILURE);
-    }
+    //from_parent_to_file(fd_out, fd_pipe);
 
-    from_parent_to_file(fd_out, fd_pipe);
-
-    from_parent_to_M_processes (fd_out, fd_pipe, n_years_dataset(data));
+    from_parent_to_M_processes (fd_pipe, n_years_dataset(data));
 
     exit(EXIT_SUCCESS);
 }

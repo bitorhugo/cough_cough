@@ -5,6 +5,7 @@
 #include "C_a.h"
 
 void from_parent_to_file (int fd_out, int *fd_pipe) {
+
     // read from pipe
     ssize_t bytes_read = 0;
     char buffer [PIPE_SZ];

@@ -8,6 +8,6 @@
 #define COUGH_COUGH_C_A_H
 
 
-void from_parent_to_file (int fd, int *fd_pipe);
+void from_parent_to_file (int fd_out, int *fd_pipe);
 
 #endif //COUGH_COUGH_C_A_H
