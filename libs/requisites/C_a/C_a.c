@@ -11,7 +11,7 @@ void from_parent_to_file (int fd_out, int *fd_pipe) {
     char buffer [PIPE_SZ];
     memset(buffer, 0, PIPE_SZ);
 
-    while((bytes_read = readn(fd_pipe[0], buffer, sizeof (buffer))) > 0) {
+    while((bytes_read = readn(fd_pipe[READ_END], buffer, sizeof (buffer))) > 0) {
         if (writen(fd_out, buffer, bytes_read) < 0) {
             perror("write failed\n");
             exit(EXIT_FAILURE);

@@ -29,6 +29,7 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
     // create M pipes
     int pipes[M][2];
     pid_t pid = 0;
+    pid_t pids [M];
 
     for (size_t i = 0; i < M; i++) {
         //open pipe for each child process
@@ -42,6 +43,9 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
             perror("fork failed\n");
             exit(EXIT_FAILURE);
         }
+
+        // save process pid
+        pids[i] = pid;
 
         // child code
         if (pid == 0) {
@@ -116,6 +120,11 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
             // get next token
             token = strtok(NULL, delin);
         }
+    }
+
+    // when finished send signal to M processes
+    for (size_t i = 0; i < M; i++) {
+        kill(pids[i], SIGUSR1);
     }
 
 }

@@ -4,6 +4,8 @@
 #include "occupation/occupation.h"
 #include "requisites/I_O/I_O.h"
 
+#include <signal.h>
+
 #ifndef COUGH_COUGH_C_B_H
 #define COUGH_COUGH_C_B_H
 
