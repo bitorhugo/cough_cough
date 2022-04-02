@@ -73,7 +73,7 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
         }
     }
 
-    // read from pipe
+    // read from N_processes pipe
     ssize_t bytes_read = 0;
     char buffer [PIPE_SZ];
     memset(buffer, 0, PIPE_SZ);
@@ -86,7 +86,7 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
         // first denotes the first occurrence of 'timestamp:' in token
         char *token = NULL, *first = NULL;
         //timestamp denotes the actual timestamp we want to retrieve
-        size_t str_size = strlen("timestamp");
+        size_t str_size = strlen("timestamp:");
         char timestamp [str_size + 1];
         size_t ts_char_count = 10;
 
@@ -97,7 +97,7 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
         uint32_t first_year = 0;
         token = strtok(buffer, "\n");
 
-        for (ssize_t i = 0; i <= bytes_read; i++) {
+        for (ssize_t i = 0; token != NULL; i++) {
             first = strstr(token, "timestamp:");
             memcpy(timestamp, (first + str_size), ts_char_count);
             uint32_t timestamp_value = (uint32_t) strtol(timestamp,
@@ -122,6 +122,11 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
         }
     }
 
+    if (bytes_read < 0) {
+        perror("readn: ");
+        exit(EXIT_FAILURE);
+    }
+
     // when finished send signal to M processes
     for (size_t i = 0; i < M; i++) {
         kill(pids[i], SIGUSR1);
@@ -130,5 +135,5 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
 }
 
 void handler () {
-
+    //execvp();
 }
