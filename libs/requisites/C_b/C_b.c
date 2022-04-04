@@ -4,6 +4,8 @@
 
 #include "C_b.h"
 
+char parsed_data [PIPE_SZ];
+
 ssize_t n_years_dataset (DATASET data) {
 
     // get first timestamp
@@ -55,8 +57,11 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
             // we need an ID to identify the pipe
             int pipe_id = (int) i;
 
+            // close WR_END of pipe
+            (void)close(pipes[pipe_id][WRITE_END]);
+
             // waits for parent to write to pipe
-            char parsed_data [PIPE_SZ];
+            //char parsed_data [PIPE_SZ];
             memset(parsed_data, 0, PIPE_SZ);
             int bytes_read = 0;
             do {
@@ -67,11 +72,16 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
                     perror("read: \n");
                     exit(EXIT_FAILURE);
                 }
-            }while (bytes_read >= 0);
+            }while (bytes_read > 0);
 
-            exit(EXIT_SUCCESS);
+            //exit(EXIT_SUCCESS);
         }
+
+        // close RD_END of pipe in parent process
+        (void) close(pipes[i][READ_END]);
     }
+
+
 
     // read from N_processes pipe
     ssize_t bytes_read = 0;
@@ -83,12 +93,12 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
                               buffer,
                               sizeof (buffer))) > 0) {
 
-        // first denotes the first occurrence of 'timestamp:' in token
+        // 'first' denotes the first occurrence of 'timestamp:' in token
         char *token = NULL, *first = NULL;
-        //timestamp denotes the actual timestamp we want to retrieve
-        size_t str_size = strlen("timestamp:");
-        char timestamp [str_size + 1];
+        // 'timestamp' denotes the actual timestamp we want to retrieve
         size_t ts_char_count = 10;
+        char timestamp [ts_char_count];
+
 
         /*
          * In order to calculate the difference in years between the timestamps
@@ -98,8 +108,8 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
         token = strtok(buffer, "\n");
 
         for (ssize_t i = 0; token != NULL; i++) {
-            first = strstr(token, "timestamp:");
-            memcpy(timestamp, (first + str_size), ts_char_count);
+            first = strstr(token, ",");
+            memcpy(timestamp, (first + 1), ts_char_count);
             uint32_t timestamp_value = (uint32_t) strtol(timestamp,
                                                 NULL,
                                                 10);
@@ -121,7 +131,6 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
             token = strtok(NULL, delin);
         }
     }
-
     if (bytes_read < 0) {
         perror("readn: ");
         exit(EXIT_FAILURE);
@@ -136,4 +145,5 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
 
 void handler () {
     //execvp();
+    write(STDOUT_FILENO, parsed_data, sizeof(parsed_data));
 }

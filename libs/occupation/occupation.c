@@ -36,7 +36,7 @@ void write_to_fd (int id, uint32_t timestamp, const char* room, int occupation,
     char buffer[256];
 
     // put data into buffer
-    sprintf(buffer, "PID:%d;id:%d;timestamp:%d;room:%s;occupation:%d\n",
+    sprintf(buffer, "%d$%d,%d,%s#%d\n",
             pid,
             id,
             timestamp,

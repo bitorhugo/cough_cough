@@ -8,7 +8,7 @@
 #define COUGH_COUGH_OCCUPATION_H
 
 #define NUM_ROOMS 4
-#define PIPE_SZ 4096
+#define PIPE_SZ 64000
 
 void occupation(DATASET data, int timestamp_number, int fd, pid_t pid);
 
