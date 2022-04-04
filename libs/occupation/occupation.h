@@ -2,7 +2,6 @@
 // Created by Vitor Hugo on 21/03/2022.
 //
 #include "parser/parser.h"
-#include "requisites/I_O/I_O.h"
 
 #ifndef COUGH_COUGH_OCCUPATION_H
 #define COUGH_COUGH_OCCUPATION_H

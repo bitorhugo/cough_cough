@@ -1,10 +1,63 @@
 //
-// Created by Vitor Hugo on 26/03/2022.
+// Created by Vitor Hugo on 05/04/2022.
 //
 
-#include "C_b.h"
+#include "io.h"
 
 char parsed_data [PIPE_SZ];
+
+ssize_t readn(int fd, void *ptr, size_t n) {
+    size_t nleft;
+    ssize_t nread;
+    nleft = n;
+    while (nleft > 0) {
+        if ((nread = read(fd, ptr, nleft)) < 0) {
+            if (nleft == n)
+                return(-1); /* error, return -1 */
+            else
+                break; /* error, return amount read so far */
+        } else if (nread == 0) {
+            break; /* EOF */
+        }
+        nleft -= nread;
+        ptr += nread;
+    }
+    return(n - nleft); /* return >= 0 */
+}
+
+ssize_t writen(int fd, const void *ptr, size_t n) {
+    size_t nleft;
+    ssize_t nwritten;
+    nleft = n;
+    while (nleft > 0) {
+        if ((nwritten = write(fd, ptr, nleft)) < 0) {
+            if (nleft == n)
+                return(-1); /* error, return -1 */
+            else
+                break; /* error, return amount written so far */
+        } else if (nwritten == 0) {
+            break;
+        }
+        nleft -= nwritten;
+        ptr += nwritten;
+    }
+    return(n - nleft); /* return >= 0 */
+}
+
+void from_parent_to_file (int fd_out, int *fd_pipe) {
+
+    // read from pipe
+    ssize_t bytes_read = 0;
+    char buffer [PIPE_SZ];
+    memset(buffer, 0, PIPE_SZ);
+
+    while((bytes_read = readn(fd_pipe[READ_END], buffer, sizeof (buffer))) > 0) {
+        if (writen(fd_out, buffer, bytes_read) < 0) {
+            perror("write failed\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+}
 
 ssize_t n_years_dataset (DATASET data) {
 
@@ -90,8 +143,8 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
     char delin [] = "\n";
 
     while ((bytes_read = readn(fd_pipe[READ_END],
-                              buffer,
-                              sizeof (buffer))) > 0) {
+                               buffer,
+                               sizeof (buffer))) > 0) {
 
         // 'first' denotes the first occurrence of 'timestamp:' in token
         char *token = NULL, *first = NULL;
@@ -111,8 +164,8 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
             first = strstr(token, ",");
             memcpy(timestamp, (first + 1), ts_char_count);
             uint32_t timestamp_value = (uint32_t) strtol(timestamp,
-                                                NULL,
-                                                10);
+                                                         NULL,
+                                                         10);
 
             if (i == 0) {
                 first_year = timestamp_value;
@@ -145,5 +198,5 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
 
 void handler () {
     //execvp();
-    write(STDOUT_FILENO, parsed_data, sizeof(parsed_data));
+    write(STDOUT_FILENO, parsed_data, strlen(parsed_data));
 }

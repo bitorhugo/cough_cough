@@ -3,6 +3,7 @@
 //
 
 #include "occupation.h"
+#include "../io/io.h"
 
 void occupation(const DATASET data, int id, int fd, pid_t pid) {
 

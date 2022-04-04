@@ -6,8 +6,9 @@
 
 #include "parser/parser.h"
 #include "occupation/occupation.h"
-#include "requisites/C_a/C_a.h"
-#include "requisites/C_b/C_b.h"
+#include "io/io.h"
+#include "server/server.h"
+
 
 // EC 4.d
 
@@ -101,6 +102,6 @@ int main(int argc, char** argv) {
     //from_parent_to_file(fd_out, fd_pipe);
 
     from_parent_to_M_processes (fd_pipe, n_years_dataset(data));
-
+    
     exit(EXIT_SUCCESS);
 }
