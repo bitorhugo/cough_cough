@@ -141,17 +141,33 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
     char buffer [PIPE_SZ];
     memset(buffer, 0, PIPE_SZ);
     char delin [] = "\n";
-
+    char *str = NULL;
     while ((bytes_read = readn(fd_pipe[READ_END],
                                buffer,
                                sizeof (buffer))) > 0) {
+
+        str = calloc(bytes_read, sizeof(char));
+        strcpy(str, buffer);
+
+        if (str != NULL) {
+
+        }
+
+        if (buffer[bytes_read - 1] != '\n') {
+            int count = 0;
+            for (size_t i = bytes_read - 1; buffer[i] == '\n'; i--) {
+                count ++;
+            }
+            str = calloc(count + 1, sizeof(char));
+            memcpy(str,((buffer + bytes_read) - count), count);
+            buffer[(bytes_read) - count] = '\0';
+        }
 
         // 'first' denotes the first occurrence of 'timestamp:' in token
         char *token = NULL, *first = NULL;
         // 'timestamp' denotes the actual timestamp we want to retrieve
         size_t ts_char_count = 10;
         char timestamp [ts_char_count];
-
 
         /*
          * In order to calculate the difference in years between the timestamps
@@ -183,6 +199,8 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M) {
             // get next token
             token = strtok(NULL, delin);
         }
+
+
     }
     if (bytes_read < 0) {
         perror("readn: ");

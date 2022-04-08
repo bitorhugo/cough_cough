@@ -18,11 +18,25 @@ void occupation(const DATASET data, int id, int fd, pid_t pid) {
         // get timestamp
         timestamp = data.lines[id].areas_timestamps[i];
 
-        // calculate occupation of room
-        for (ssize_t j = id; j >= 0; j--) {
-            int timestamp_to_compare = data.lines[j - 1].areas_timestamps[i + 1];
-            if (timestamp < timestamp_to_compare) {
-                occupation[i] ++;
+        if (i == 0) {
+            // calculate occupation for admission room
+            for (ssize_t j = id; j >= 0; j--) {
+                int timestamp_to_compare = data.lines[j - 1].areas_timestamps[i + 1];
+                if (timestamp < timestamp_to_compare) {
+                    occupation[i] ++;
+                }
+            }
+        }
+        else {
+            // cycle current column
+            for (size_t j = 0; j < data.num_lines; j++) {
+                uint32_t iter_curr = data.lines[j].areas_timestamps[i];
+                uint32_t iter_next = data.lines[j].areas_timestamps[i + 1];
+                if (timestamp > iter_curr) {
+                    if (timestamp < iter_next) {
+                        occupation[i] ++;
+                    }
+                }
             }
         }
         // write to file
@@ -52,3 +66,19 @@ void write_to_fd (int id, uint32_t timestamp, const char* room, int occupation,
 
 }
 
+void check_if_sorted (DATASET *data) {
+
+    for (size_t i = 1; i < data->num_lines; i++) {
+        size_t prev = data->lines[i - 1].areas_timestamps[1];
+        size_t curr = data->lines[i].areas_timestamps[1];
+
+        if (curr < prev && curr != 9999) {
+
+            exit(23);
+        }
+        if (i == data->num_lines - 5) {
+            printf("uauaua");
+        }
+    }
+
+}

@@ -99,9 +99,9 @@ int main(int argc, char** argv) {
         exit(EXIT_FAILURE);
     }
 
-    //from_parent_to_file(fd_out, fd_pipe);
+    from_parent_to_file(fd_out, fd_pipe);
 
-    from_parent_to_M_processes (fd_pipe, n_years_dataset(data));
-    
+    //from_parent_to_M_processes (fd_pipe, n_years_dataset(data));
+
     exit(EXIT_SUCCESS);
 }
