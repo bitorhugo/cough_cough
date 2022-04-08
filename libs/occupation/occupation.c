@@ -18,11 +18,16 @@ void occupation(const DATASET data, int id, int fd, pid_t pid) {
         // get timestamp
         timestamp = data.lines[id].areas_timestamps[i];
 
+        // set an interval to search for occupation
+        uint32_t min_interval = timestamp - ONE_DAY_UNIX_TS;
+        uint32_t max_interval = timestamp + ONE_DAY_UNIX_TS;
+
         if (i == 0) {
             // calculate occupation for admission room
             for (ssize_t j = id; j >= 0; j--) {
-                int timestamp_to_compare = data.lines[j - 1].areas_timestamps[i + 1];
-                if (timestamp < timestamp_to_compare) {
+                uint32_t iter = data.lines[j - 1].areas_timestamps[i + 1];
+                if (iter < min_interval) break;
+                if (timestamp < iter) {
                     occupation[i] ++;
                 }
             }
