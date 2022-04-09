@@ -10,6 +10,7 @@
 
 #define WRITE_END 1
 #define READ_END 0
+#define PIPE_SZ 4096
 
 #ifndef COUGH_COUGH_IO_H
 #define COUGH_COUGH_IO_H

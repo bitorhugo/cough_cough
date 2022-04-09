@@ -7,7 +7,7 @@
 #include "parser/parser.h"
 #include "occupation/occupation.h"
 #include "io/io.h"
-#include "server/server.h"
+#include "socket/socket.h"
 
 
 // EC 4.d
@@ -84,9 +84,16 @@ int main(int argc, char** argv) {
             }
 
             for (size_t j = i; j < data.num_lines; j += N_processes) {
-                // write to fd_out/fd_pipe
+                // write to fd_out
                 //occupation(data, j, fd_out, getpid());
+
+                // write to fd_pipe
                 occupation(data, j, fd_pipe[WRITE_END], getpid());
+
+                // write to socket
+                //int uds = create_socket_client("/temp/socket");
+                //occupation(data, j, uds, getpid());
+
             }
             // implicitly close write-end from pipe using exit()
             exit(EXIT_SUCCESS);
