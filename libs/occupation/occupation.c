@@ -26,7 +26,6 @@ void occupation(const DATASET data, int id, int fd, pid_t pid) {
             // calculate occupation for admission room
             for (ssize_t j = id; j >= 0; j--) {
                 uint32_t iter = data.lines[j - 1].areas_timestamps[i + 1];
-                if (iter < min_interval) break;
                 if (timestamp < iter) {
                     occupation[i] ++;
                 }
@@ -37,7 +36,7 @@ void occupation(const DATASET data, int id, int fd, pid_t pid) {
             for (size_t j = 0; j < data.num_lines; j++) {
                 uint32_t iter_curr = data.lines[j].areas_timestamps[i];
                 uint32_t iter_next = data.lines[j].areas_timestamps[i + 1];
-                if (timestamp > iter_curr) {
+                if (timestamp > iter_curr && iter_curr != NOT_VALID_TIMESTAMP) {
                     if (timestamp < iter_next) {
                         occupation[i] ++;
                     }
