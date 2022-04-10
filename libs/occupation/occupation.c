@@ -5,7 +5,7 @@
 #include "occupation.h"
 #include "../io/io.h"
 
-void occupation(const DATASET data, int id, int fd, pid_t pid) {
+void occupation(const DATASET data, int id, int fd_write, pid_t pid) {
 
     const char *rooms[NUM_ROOMS] = {"wait_triage", "triage", "wait_doc_app", "doc_app"};
     int occupation [NUM_ROOMS] = {};
@@ -62,13 +62,13 @@ void occupation(const DATASET data, int id, int fd, pid_t pid) {
 
         }
         // write to file
-        write_to_fd(id, timestamp, rooms[i], occupation[i], fd, pid);
+        write_to_fd(id, timestamp, rooms[i], occupation[i], fd_write, pid);
     }
 
 }
 
 void write_to_fd (int id, uint32_t timestamp, const char* room, int occupation,
-                  int fd, pid_t pid) {
+                  int fd_write, pid_t pid) {
 
     char buffer[256];
 
@@ -81,7 +81,7 @@ void write_to_fd (int id, uint32_t timestamp, const char* room, int occupation,
             occupation);
 
     // append buffer
-    if (writen(fd, buffer, strlen(buffer)) != strlen(buffer)) {
+    if (writen(fd_write, buffer, strlen(buffer)) != strlen(buffer)) {
         perror("write failed\n");
         exit(1);
     }

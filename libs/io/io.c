@@ -81,7 +81,7 @@ uint32_t first_ts(DATASET data) {
     return data.lines[0].areas_timestamps[0];
 }
 
-void from_parent_to_M_processes (int *fd_pipe, size_t M, uint32_t first_ts) {
+void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
 
     // create M pipes
     int pipes[M][2];
@@ -116,7 +116,7 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M, uint32_t first_ts) {
             (void)close(pipes[pipe_id][WRITE_END]);
 
             // waits for parent to write to pipe
-            char parsed_data [PIPE_SZ];
+            char *parsed_data = calloc(PIPE_SZ, sizeof(char));
 
             int bytes_read = 0;
             do {
@@ -127,6 +127,7 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M, uint32_t first_ts) {
                     perror("read: \n");
                     exit(EXIT_FAILURE);
                 }
+                parsed_data = realloc(parsed_data, PIPE_SZ + bytes_read);
             }while (bytes_read > 0);
         }
 
@@ -136,46 +137,41 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M, uint32_t first_ts) {
 
     // read from N_processes pipe
     ssize_t bytes_read = 0;
-    size_t buffer_sz = PIPE_SZ + 1; // +1 for '\0'
+    size_t buffer_sz = PIPE_SZ;
     char *buffer = calloc(buffer_sz, sizeof(char));
 
     char delin [] = "\n";
     char *str = NULL;
-    char *tmp = NULL;
-    size_t loop = 0;
+    int count = 0;
 
     while (1) {
         // read PIPE_SZ bytes into buffer
-        bytes_read = readn(fd_pipe[READ_END], buffer, PIPE_SZ);
+        bytes_read = readn(fd_read, buffer, PIPE_SZ);
 
         if (bytes_read <= 0) break;
 
         // concatenate not parsed str to beginning of buffer
-        if (loop > 0 && str != NULL) {
-            if (tmp != NULL) free(tmp);
-            tmp = calloc(buffer_sz, sizeof(char));
-            strcpy(tmp, buffer);
-
-            // update buffer size to fit the unparsed data
-            buffer_sz = PIPE_SZ + strlen(str) + 1; // +1 for '\0'
-            buffer = realloc(buffer, buffer_sz);
-            memset(buffer, 0, buffer_sz);
-
-            strcpy(buffer, str);
-            strcat(buffer, tmp);
+        if (str != NULL) {
+            // reallocate buffer to fit str and paste it to the beginning
+            buffer = realloc(buffer, buffer_sz + count);
+            memmove(buffer + count, buffer, buffer_sz);
+            memcpy(buffer, str, count);
+            // update buffer size
+            buffer_sz += count;
         }
 
         // check if able to parse last segment of data
-        if (buffer[buffer_sz - 2] != '\n') {
-            int count = 0;
-            for (size_t i = buffer_sz - 2; buffer[i] != '\n'; i--) {
+        if (buffer[buffer_sz - 1] != '\n') {
+            count = 0;
+            for (size_t i = buffer_sz - 1; buffer[i] != '\n'; i--) {
                 count ++;
             }
             if (str != NULL) free(str);
-            str = calloc(count + 1, sizeof(char));
-            memcpy(str,(buffer + buffer_sz - 2 - (count - 1)), count);
-            memset(buffer + ((buffer_sz - 1) - count), 0, count);
+            str = calloc(count, sizeof(char));
+            memcpy(str,(buffer + buffer_sz - count), count);
+            memset(buffer + (buffer_sz - count), 0, count);
         }
+        // temporary debug print
         printf("%s", buffer);
         // 'first' denotes the first occurrence of 'timestamp:' in token
         char *token = NULL, *first = NULL;
@@ -185,7 +181,7 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M, uint32_t first_ts) {
 
         token = strtok(buffer, "\n");
 
-        for (ssize_t i = 0; token != NULL; i++) {
+        while (token != NULL) {
             first = strstr(token, ",");
             memcpy(timestamp, (first + 1), ts_char_count);
             uint32_t timestamp_value = (uint32_t) strtol(timestamp,
@@ -193,7 +189,7 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M, uint32_t first_ts) {
                                                          10);
 
             // write to pipe
-            size_t pipe_id = (timestamp_value - first_ts) / ONE_YEAR_UNIX_TS;
+            int pipe_id = (int)(timestamp_value - first_ts) / ONE_YEAR_UNIX_TS;
 
             if (writen(pipes[pipe_id][WRITE_END],
                        token,
@@ -206,11 +202,12 @@ void from_parent_to_M_processes (int *fd_pipe, size_t M, uint32_t first_ts) {
             token = strtok(NULL, delin);
         }
 
-        loop ++;
+        // reset buffer
+        memset(buffer, 0, buffer_sz);
+        buffer_sz = PIPE_SZ;
     }
 
-    free (buffer);
-    free(tmp);
+    free(buffer);
     free(str);
 
     // when finished send signal to M processes

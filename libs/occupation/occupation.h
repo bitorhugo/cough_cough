@@ -7,9 +7,9 @@
 #define COUGH_COUGH_OCCUPATION_H
 
 #define NUM_ROOMS 4
-#define PIPE_SZ 4096
 
-void occupation(DATASET data, int timestamp_number, int fd, pid_t pid);
+
+void occupation(DATASET data, int timestamp_number, int fd_write, pid_t pid);
 
 void write_to_fd (int id, uint32_t timestamp, const char* room,
                   int occupation, int fd, pid_t pid);

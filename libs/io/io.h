@@ -51,7 +51,7 @@ ssize_t n_years_dataset (DATASET data);
 
 uint32_t first_ts(DATASET data);
 
-void from_parent_to_M_processes (int *fd_pipe, size_t M, uint32_t first_ts);
+void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts);
 
 void handler (int SIG);
 
