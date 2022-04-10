@@ -23,8 +23,9 @@ void occupation(const DATASET data, int id, int fd, pid_t pid) {
         uint32_t max_interval = timestamp + ONE_DAY_UNIX_TS;
 
         if (i == 0) {
+            // admission column is ordered by default
             // calculate occupation for admission room
-            for (ssize_t j = id; j >= 0; j--) {
+            for (ssize_t j = id; j > 0; j--) {
                 uint32_t iter = data.lines[j - 1].areas_timestamps[i + 1];
                 if (timestamp < iter) {
                     occupation[i] ++;
@@ -32,16 +33,33 @@ void occupation(const DATASET data, int id, int fd, pid_t pid) {
             }
         }
         else {
-            // cycle current column
-            for (size_t j = 0; j < data.num_lines; j++) {
-                uint32_t iter_curr = data.lines[j].areas_timestamps[i];
-                uint32_t iter_next = data.lines[j].areas_timestamps[i + 1];
+            // cycle before current timestamp
+            for (ssize_t j = id; j > 0; j--) {
+                uint32_t iter_curr = data.lines[j - 1].areas_timestamps[i];
+                uint32_t iter_next = data.lines[j - 1].areas_timestamps[i + 1];
                 if (timestamp > iter_curr && iter_curr != NOT_VALID_TIMESTAMP) {
                     if (timestamp < iter_next) {
                         occupation[i] ++;
                     }
                 }
+                if (iter_curr < min_interval){
+                    break;
+                }
             }
+            // cycle after current timestamp
+            for (size_t j = id; j < data.num_lines; j++) {
+                uint32_t iter_curr = data.lines[j + 1].areas_timestamps[i];
+                uint32_t iter_next = data.lines[j + 1].areas_timestamps[i + 1];
+                if (timestamp > iter_curr && iter_curr != NOT_VALID_TIMESTAMP) {
+                    if (timestamp < iter_next) {
+                        occupation[i] ++;
+                    }
+                }
+                if (iter_curr > max_interval){
+                    break;
+                }
+            }
+
         }
         // write to file
         write_to_fd(id, timestamp, rooms[i], occupation[i], fd, pid);
@@ -86,3 +104,15 @@ void check_if_sorted (DATASET *data) {
     }
 
 }
+
+/*
+ * for (size_t j = 0; j < data.num_lines; j++) {
+                uint32_t iter_curr = data.lines[j].areas_timestamps[i];
+                uint32_t iter_next = data.lines[j].areas_timestamps[i + 1];
+                if (timestamp > iter_curr && iter_curr != NOT_VALID_TIMESTAMP) {
+                    if (timestamp < iter_next) {
+                        occupation[i] ++;
+                    }
+                }
+            }
+ */

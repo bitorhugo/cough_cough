@@ -52,6 +52,12 @@ int main(int argc, char** argv) {
         exit (EXIT_FAILURE);
     }
 
+    /*
+    for (size_t i = 0; i < data.num_lines; i++) {
+        occupation(data, i, fd_out, getpid());
+    }
+*/
+
     // array of children pid(s)
     int pids [N_processes];
 
@@ -84,10 +90,10 @@ int main(int argc, char** argv) {
             }
 
             for (size_t j = i; j < data.num_lines; j += N_processes) {
-                // write to fd_out
+                // write directly to fd_out
                 //occupation(data, j, fd_out, getpid());
 
-                // write to fd_pipe
+                // write to fd_pipe first
                 occupation(data, j, fd_pipe[WRITE_END], getpid());
 
                 // write to socket
@@ -106,9 +112,13 @@ int main(int argc, char** argv) {
         exit(EXIT_FAILURE);
     }
 
-    //from_parent_to_file(fd_out, fd_pipe);
+    from_parent_to_file(fd_out, fd_pipe);
 
     from_parent_to_M_processes (fd_pipe, n_years_dataset(data), first_ts(data));
+
+    for (size_t i = 0; i < N_processes; i++) {
+        waitpid(pids[i], NULL, 0);
+    }
 
     exit(EXIT_SUCCESS);
 }
