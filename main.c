@@ -9,18 +9,15 @@
 #include "io/io.h"
 #include "socket/socket.h"
 
-
-// EC 4.d
-
 int main(int argc, char** argv) {
 
-    // argc : 4
-    // argv : [
-    //  "program_name",
-    //  "number of child processes",
-    //  "input path",
-    //  "output path"
-    // ]
+    /*
+     * argc : 4
+     *  argv: ["program_name",
+     *         "number of child processes",
+     *         "input path",
+     *         "output path"]
+     */
 
     if (argc < 4) {
         printf("LINE %d: ", __LINE__ - 1);
