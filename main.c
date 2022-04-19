@@ -23,6 +23,7 @@ int main(int argc, char** argv) {
     // ]
 
     if (argc < 4) {
+        printf("LINE %d: ", __LINE__ - 1);
         perror("INCORRECT NUMBER OF ARG\n");
         exit (EXIT_FAILURE);
     }
@@ -48,6 +49,7 @@ int main(int argc, char** argv) {
                       O_WRONLY | O_APPEND | O_TRUNC | O_CREAT,
                       S_IXUSR | S_IWUSR | S_IRUSR);
     if (fd_out < 0) {
+        printf("LINE %d: ", __LINE__ - 1);
         perror("open failed\n");
         exit (EXIT_FAILURE);
     }
@@ -66,6 +68,7 @@ int main(int argc, char** argv) {
     // fds[1] -> write-end
     int fd_pipe[2];
     if (pipe(fd_pipe) < 0) {
+        printf("LINE %d: ", __LINE__ - 1);
         perror("piping failed\n");
         exit(EXIT_FAILURE);
     }
@@ -74,6 +77,7 @@ int main(int argc, char** argv) {
     pid_t pid = 0;
     for (size_t i = 0; i < N_processes; i++) {
         if ((pid = fork()) < 0) {
+            printf("LINE %d: ", __LINE__ - 1);
             perror("fork failed\n");
             exit(EXIT_FAILURE);
         }
@@ -85,6 +89,7 @@ int main(int argc, char** argv) {
         if (pid == 0) {
             // child process will only write to pipe -> close read-end from pipe
             if (close(fd_pipe[READ_END]) < 0) {
+                printf("LINE %d: ", __LINE__ - 1);
                 perror("close failed\n");
                 exit(EXIT_FAILURE);
             }
@@ -108,6 +113,7 @@ int main(int argc, char** argv) {
 
     // parent process will only read from pipe -> close write-end from pipe
     if (close(fd_pipe[WRITE_END]) < 0) {
+        printf("LINE %d: ", __LINE__ - 1);
         perror("close failed\n");
         exit(EXIT_FAILURE);
     }

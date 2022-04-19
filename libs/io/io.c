@@ -116,7 +116,11 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
             (void)close(pipes[pipe_id][WRITE_END]);
 
             // waits for parent to write to pipe
-            char *parsed_data = calloc(PIPE_SZ, sizeof(char));
+            char *parsed_data;
+            if((parsed_data = calloc(PIPE_SZ, sizeof(char))) == NULL) {
+                perror("calloc:");
+                exit(EXIT_FAILURE);
+            }
 
             int bytes_read = 0;
             do {
