@@ -4,6 +4,8 @@
 
 #include "io.h"
 
+int flag = 0;
+
 ssize_t readn(int fd, void *ptr, size_t n) {
     size_t nleft;
     ssize_t nread;
@@ -116,24 +118,15 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
             (void)close(pipes[pipe_id][WRITE_END]);
 
             // allocate buffer for reading from pipe
-            char *parsed_data;
-            if((parsed_data = calloc(PIPE_SZ, sizeof(char))) == NULL) {
-                perror("calloc:");
-                exit(EXIT_FAILURE);
-            }
-
+            char buffer[PIPE_SZ];
             // waits for parent to write to pipe
             int bytes_read = 0;
-            do {
-                bytes_read = readn(pipes[pipe_id][READ_END],
-                                   parsed_data,
-                                   PIPE_SZ);
-                if (bytes_read < 0) {
-                    perror("read: \n");
-                    exit(EXIT_FAILURE);
-                }
-                parsed_data = realloc(parsed_data, PIPE_SZ + bytes_read);
-            }while (bytes_read > 0);
+            while ((bytes_read = readn(pipes[pipe_id][READ_END],
+                                       buffer, PIPE_SZ)) > 0) {
+                //dup2(pipes[pipe_id][READ_END], STDIN_FILENO);
+                writen(STDIN_FILENO, buffer, bytes_read);
+            }
+
         }
 
         // close RD_END of pipe in parent process
@@ -176,8 +169,7 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
             memcpy(str,(buffer + buffer_sz - count), count);
             memset(buffer + (buffer_sz - count), 0, count);
         }
-        // temporary debug print
-        printf("%s", buffer);
+        printf("%s\n", buffer);
         // 'first' denotes the first occurrence of 'timestamp:' in token
         char *token = NULL, *first = NULL;
         // 'timestamp' denotes the actual timestamp we want to retrieve
@@ -195,7 +187,6 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
 
             // write to pipe
             int pipe_id = (int)(timestamp_value - first_ts) / ONE_YEAR_UNIX_TS;
-
             if (writen(pipes[pipe_id][WRITE_END],
                        token,
                        strlen(token)) < 0) {
@@ -218,11 +209,11 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
     // when finished send signal to M processes
     for (size_t i = 0; i < M; i++) {
         kill(pids[i], SIGUSR1);
+        //close(pipes[i][WRITE_END]);
     }
 
 }
 
 void handler () {
-    //dup2();
-    //execvp();
+    execlp( "python3","python3", "plot.py",  NULL);
 }
