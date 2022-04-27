@@ -10,7 +10,7 @@ int create_socket_client(char *socket_path) {
     int uds = 0;
     struct sockaddr_un channel;		/* Unix Domain socket */
 
-    if ( (uds = socket(AF_UNIX, SOCK_STREAM, 0)) < 0) {
+    if ((uds = socket(AF_UNIX, SOCK_STREAM, 0)) < 0) {
         perror("socket error");
         exit(EXIT_FAILURE);
     }
@@ -31,20 +31,17 @@ int create_socket_server(char *socket_path) {
 
     int listenfd;
 
-    char buf[PIPE_SZ];
-    // buffer for outgoing file
     struct sockaddr_un channel_srv;
 
-    // Creating the server socket
-    if ( (listenfd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1) {
+
+    if ((listenfd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0) {
         perror("socket error");
-        exit(-1);
+        exit(EXIT_FAILURE);
     }
 
     unlink(socket_path);
 
     memset(&channel_srv, 0, sizeof(channel_srv));
-
     channel_srv.sun_family = AF_UNIX;
     strncpy(channel_srv.sun_path,
             socket_path,
@@ -55,14 +52,33 @@ int create_socket_server(char *socket_path) {
              (struct sockaddr*)&channel_srv,
                      sizeof(channel_srv)) == -1) {
         perror("bind error");
-        exit(-1);
+        exit(EXIT_FAILURE);
     }
 
     // Configuring the listen queue
     if (listen(listenfd, LISTENQ) == -1) {
         perror("listen error");
-        exit(-1);
+        exit(EXIT_FAILURE);
     }
 
     return listenfd;
+}
+
+void from_socket_to_file (int listen_fd, int fd_out) {
+    int connfd = 0;
+    size_t bytes_read = 0;
+    char buffer[PIPE_SZ];
+
+    while (1) {
+
+        if ((connfd = accept(listen_fd, NULL, NULL)) < 0) {
+            perror("accept:");
+        }
+
+        while ((bytes_read = readn(connfd, buffer, sizeof(buffer))) > 0) {
+            writen(fd_out, buffer, bytes_read);
+        }
+
+    }
+
 }

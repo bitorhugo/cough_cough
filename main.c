@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
 #include <fcntl.h>
 
+#include "from_N_processes_to_file/from_N_processes_to_file.h"
+#include "from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.h"
+#include "from_N_processes_to_parent_to_M_processes/from_N_processes_to_parent_to_M_processes.h"
+#include "from_socket_to_file/from_socket_to_file.h"
 #include "parser/parser.h"
 #include "occupation/occupation.h"
 #include "io/io.h"
@@ -32,9 +35,8 @@ int main(int argc, char** argv) {
     // output data pointer
     char *output_path = argv[3];
 
-    DATASET data = {};
-
     // load data
+    DATASET data = {};
     clock_t time;
     time = clock();
     load_data(input_path, &data);
@@ -51,75 +53,13 @@ int main(int argc, char** argv) {
         exit (EXIT_FAILURE);
     }
 
-    /*
-    for (size_t i = 0; i < data.num_lines; i++) {
-        occupation(data, i, fd_out, getpid());
-    }
-*/
+    //from_N_processes_to_file(fd_out, N_processes, data);
 
-    // array of children pid(s)
-    int pids [N_processes];
+    //from_N_processes_to_parent_to_file(fd_out, N_processes, data);
 
-    // open pipe for communication between parent and child processes
-    // fds[0] -> read-end
-    // fds[1] -> write-end
-    int fd_pipe[2];
-    if (pipe(fd_pipe) < 0) {
-        printf("LINE %d: ", __LINE__ - 1);
-        perror("piping failed\n");
-        exit(EXIT_FAILURE);
-    }
+    from_N_processes_to_parent_to_M_processes(N_processes, data);
 
-    // run processes for occupation calculation
-    pid_t pid = 0;
-    for (size_t i = 0; i < N_processes; i++) {
-        if ((pid = fork()) < 0) {
-            printf("LINE %d: ", __LINE__ - 1);
-            perror("fork failed\n");
-            exit(EXIT_FAILURE);
-        }
-
-        // save child pid
-        pids[i] = pid;
-
-        // child code
-        if (pid == 0) {
-            // child process will only write to pipe -> close read-end from pipe
-            if (close(fd_pipe[READ_END]) < 0) {
-                printf("LINE %d: ", __LINE__ - 1);
-                perror("close failed\n");
-                exit(EXIT_FAILURE);
-            }
-
-            for (size_t j = i; j < data.num_lines; j += N_processes) {
-                // write directly to fd_out
-                //occupation(data, j, fd_out, getpid());
-
-                // write to fd_pipe first
-                occupation(data, j, fd_pipe[WRITE_END], getpid());
-
-                // write to socket
-                //int uds = create_socket_client("/temp/socket");
-                //occupation(data, j, uds, getpid());
-
-            }
-            // implicitly close write-end from pipe using exit()
-            exit(EXIT_SUCCESS);
-        }
-    }
-
-    // parent process will only read from pipe -> close write-end from pipe
-    if (close(fd_pipe[WRITE_END]) < 0) {
-        printf("LINE %d: ", __LINE__ - 1);
-        perror("close failed\n");
-        exit(EXIT_FAILURE);
-    }
-
-    //from_parent_to_file(fd_out, fd_pipe);
-
-    from_parent_to_M_processes (fd_pipe[READ_END],
-                                n_years_dataset(data),
-                                first_ts(data));
+    //from_parent_socket_to_file(fd_out, N_processes, data);
 
 
     exit(EXIT_SUCCESS);

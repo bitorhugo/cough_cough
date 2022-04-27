@@ -21,4 +21,5 @@ int create_socket_client(char *socket_path);
 
 int create_socket_server(char *socket_path);
 
+void from_socket_to_file (int listenfd, int fd_out);
 #endif //COUGH_COUGH_SERVER_H

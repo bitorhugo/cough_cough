@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from plotnine import *
 
+#time:count
+
 def main():
     fn = sys.argv[1]
 

@@ -44,21 +44,6 @@ ssize_t writen(int fd, const void *ptr, size_t n) {
     return(n - nleft); /* return >= 0 */
 }
 
-void from_parent_to_file (int fd_out, int *fd_pipe) {
-
-    // read from pipe
-    ssize_t bytes_read = 0;
-    char buffer [PIPE_SZ];
-    memset(buffer, 0, PIPE_SZ);
-
-    while((bytes_read = readn(fd_pipe[READ_END], buffer, sizeof (buffer))) > 0) {
-        if (writen(fd_out, buffer, bytes_read) < 0) {
-            perror("write failed\n");
-            exit(EXIT_FAILURE);
-        }
-    }
-}
-
 ssize_t n_years_dataset (DATASET data) {
 
     // get first timestamp
@@ -83,6 +68,21 @@ uint32_t first_ts(DATASET data) {
     return data.lines[0].areas_timestamps[0];
 }
 
+void from_parent_to_file (int fd_out, int fd_pipe) {
+
+    // read from pipe
+    ssize_t bytes_read = 0;
+    char buffer [PIPE_SZ];
+    memset(buffer, 0, PIPE_SZ);
+
+    while((bytes_read = readn(fd_pipe, buffer, sizeof (buffer))) > 0) {
+        if (writen(fd_out, buffer, bytes_read) < 0) {
+            perror("write failed\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+}
+
 void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
 
     // create M pipes
@@ -90,6 +90,7 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
     pid_t pid = 0;
     pid_t pids [M];
 
+    // launch M processes
     for (size_t i = 0; i < M; i++) {
         //open pipe for each child process
         if((pipe(pipes[i])) < 0) {
@@ -109,7 +110,7 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
         // child code
         if (pid == 0) {
             // listens for signal
-            signal(SIGUSR1, &handler);
+            //signal(SIGUSR1, &handler);
 
             // we need an ID to identify the pipe
             int pipe_id = (int) i;
@@ -117,15 +118,13 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
             // close WR_END of pipe
             (void)close(pipes[pipe_id][WRITE_END]);
 
-            // allocate buffer for reading from pipe
-            char buffer[PIPE_SZ];
-            // waits for parent to write to pipe
-            int bytes_read = 0;
-            while ((bytes_read = readn(pipes[pipe_id][READ_END],
-                                       buffer, PIPE_SZ)) > 0) {
-                //dup2(pipes[pipe_id][READ_END], STDIN_FILENO);
-                writen(STDIN_FILENO, buffer, bytes_read);
-            }
+            // dup stdin for pipe[READ_END] in process fds
+            dup2(pipes[pipe_id][WRITE_END], STDIN_FILENO);
+
+            execlp( "python3","python3", "../data/plot.py",
+                    "../data/pyscript/out");
+            perror("exec:");
+            exit(EXIT_FAILURE);
 
         }
 
@@ -133,8 +132,7 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
         (void) close(pipes[i][READ_END]);
     }
 
-    // read from N_processes pipe
-    ssize_t bytes_read = 0;
+    ssize_t bytes_read;
     size_t buffer_sz = PIPE_SZ;
     char *buffer = calloc(buffer_sz, sizeof(char));
 
@@ -143,7 +141,7 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
     int count = 0;
 
     while (1) {
-        // read PIPE_SZ bytes into buffer
+        // read from pipe_N
         bytes_read = readn(fd_read, buffer, PIPE_SZ);
 
         if (bytes_read <= 0) break;
@@ -169,27 +167,43 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
             memcpy(str,(buffer + buffer_sz - count), count);
             memset(buffer + (buffer_sz - count), 0, count);
         }
-        printf("%s\n", buffer);
-        // 'first' denotes the first occurrence of 'timestamp:' in token
-        char *token = NULL, *first = NULL;
-        // 'timestamp' denotes the actual timestamp we want to retrieve
-        size_t ts_char_count = 10;
-        char timestamp [ts_char_count];
+
+        char *token = NULL, *tmp = NULL;
+        size_t arr_sz = 11;
+        char timestamp [arr_sz], occupation [arr_sz], final_str[arr_sz * 2];
+        memset(timestamp, 0, arr_sz);
+        memset(occupation, 0, arr_sz);
+        memset(final_str, 0, arr_sz * 2);
 
         token = strtok(buffer, "\n");
 
         while (token != NULL) {
-            first = strstr(token, ",");
-            memcpy(timestamp, (first + 1), ts_char_count);
+
+            // get timestamp and save it on timestamp_value
+            tmp = strstr(token, ",");
+            memcpy(timestamp, (tmp + 1), arr_sz - 1);
             uint32_t timestamp_value = (uint32_t) strtol(timestamp,
                                                          NULL,
                                                          10);
 
+            // get occupation and save it on occupation_value
+            tmp = strstr(token, "#");
+            int i;
+            for (i = 1; tmp[i] != '\0'; i++) {
+                occupation[i - 1] = tmp[i];
+            }
+
+            // concatenate timestamp to occupation
+            strcpy(final_str, timestamp);
+            strcat(final_str, ";");
+            strcat(final_str, occupation);
+            strcat(final_str, "\n");
+
             // write to pipe
             int pipe_id = (int)(timestamp_value - first_ts) / ONE_YEAR_UNIX_TS;
             if (writen(pipes[pipe_id][WRITE_END],
-                       token,
-                       strlen(token)) < 0) {
+                       final_str,
+                       strlen(final_str)) < 0) {
                 perror("write2: ");
                 exit(EXIT_FAILURE);
             }
@@ -208,12 +222,10 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
 
     // when finished send signal to M processes
     for (size_t i = 0; i < M; i++) {
-        kill(pids[i], SIGUSR1);
-        //close(pipes[i][WRITE_END]);
+        close(pipes[i][WRITE_END]);
+        //kill(pids[i], SIGUSR1);
     }
+    wait(NULL);
 
 }
 
-void handler () {
-    execlp( "python3","python3", "plot.py",  NULL);
-}

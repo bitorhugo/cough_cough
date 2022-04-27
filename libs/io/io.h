@@ -40,7 +40,7 @@ ssize_t writen(int fd, const void *ptr, size_t n);
  * @param fd_out file descriptor of file to write to
  * @param fd_pipe file descriptor of pipe of whom to read
  */
-void from_parent_to_file (int fd_out, int *fd_pipe);
+void from_parent_to_file (int fd_out, int fd_pipe);
 
 /**
  * calculates number of years in Dataset
