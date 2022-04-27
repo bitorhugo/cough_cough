@@ -6,6 +6,8 @@ from plotnine import *
 #time:count
 
 def main():
+    print('hello')
+
     fn = sys.argv[1]
 
     df = pd.read_csv(sys.stdin)

@@ -119,10 +119,9 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
             (void)close(pipes[pipe_id][WRITE_END]);
 
             // dup stdin for pipe[READ_END] in process fds
-            dup2(pipes[pipe_id][WRITE_END], STDIN_FILENO);
+            dup2(pipes[pipe_id][READ_END], STDIN_FILENO);
 
-            execlp( "python3","python3", "../data/plot.py",
-                    "../data/pyscript/out");
+            execlp( "python3","python3", "../py/hello.py", NULL);
             perror("exec:");
             exit(EXIT_FAILURE);
 
