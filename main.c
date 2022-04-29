@@ -57,9 +57,9 @@ int main(int argc, char** argv) {
 
     //from_N_processes_to_parent_to_file(fd_out, N_processes, data);
 
-    from_N_processes_to_parent_to_M_processes(N_processes, data);
+    //from_N_processes_to_parent_to_M_processes(N_processes, data);
 
-    //from_parent_socket_to_file(fd_out, N_processes, data);
+    from_parent_socket_to_file(fd_out, N_processes, data);
 
 
     exit(EXIT_SUCCESS);
