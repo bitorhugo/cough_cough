@@ -1,0 +1,3 @@
+/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir
