@@ -16,6 +16,7 @@
 #define NOT_VALID_TIMESTAMP 9999
 #define ONE_YEAR_UNIX_TS 31556926
 #define ONE_DAY_UNIX_TS 86400
+#define ONE_WEEK_UNIX_TS 604800
 
 typedef struct line {
     uint32_t areas_timestamps[NUM_AREAS];

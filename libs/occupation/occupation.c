@@ -19,8 +19,8 @@ void occupation(const DATASET data, int id, int fd_write, pid_t pid) {
         timestamp = data.lines[id].areas_timestamps[i];
 
         // set an interval to search for occupation
-        uint32_t min_interval = timestamp - ONE_DAY_UNIX_TS;
-        uint32_t max_interval = timestamp + ONE_DAY_UNIX_TS;
+        uint32_t min_interval = timestamp - ONE_WEEK_UNIX_TS;
+        uint32_t max_interval = timestamp + ONE_WEEK_UNIX_TS;
 
         if (i == 0) {
             // admission column is ordered by default
