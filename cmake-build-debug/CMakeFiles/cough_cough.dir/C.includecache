@@ -24,6 +24,10 @@ unistd.h
 fcntl.h
 -
 
+/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/io/io.c
+io.h
+/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/io/io.h
+
 /Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/io/io.h
 stdlib.h
 -
@@ -35,14 +39,4 @@ signal.h
 -
 occupation/occupation.h
 /Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/io/occupation/occupation.h
-
-/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/occupation/occupation.c
-occupation.h
-/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/occupation/occupation.h
-../io/io.h
-/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/io/io.h
-
-/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/occupation/occupation.h
-parser/parser.h
-/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/occupation/parser/parser.h
 

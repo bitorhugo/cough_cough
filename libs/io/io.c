@@ -121,7 +121,7 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
             // dup stdin for pipe[READ_END] in process fds
             dup2(pipes[pipe_id][READ_END], STDIN_FILENO);
 
-            execlp( "python3","python3", "../py/plot.py", NULL);
+            execlp( "python3","python3", "../py/hello.py", NULL);
             perror("exec:");
             exit(EXIT_FAILURE);
 
@@ -206,6 +206,8 @@ void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts) {
                 perror("write2: ");
                 exit(EXIT_FAILURE);
             }
+            memset(final_str, 0, arr_sz * 2);
+            memset(occupation, 0, arr_sz);
 
             // get next token
             token = strtok(NULL, delin);
