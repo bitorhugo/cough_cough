@@ -110,6 +110,12 @@
 		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.h">
 			<Option target="cough_cough"/>
 		</Unit>
+		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/from_N_threads_to_file/from_N_threads_to_file.c">
+			<Option target="cough_cough"/>
+		</Unit>
+		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/from_N_threads_to_file/from_N_threads_to_file.h">
+			<Option target="cough_cough"/>
+		</Unit>
 		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/from_socket_to_file/from_socket_to_file.c">
 			<Option target="cough_cough"/>
 		</Unit>

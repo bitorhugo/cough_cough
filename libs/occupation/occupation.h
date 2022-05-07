@@ -8,7 +8,6 @@
 
 #define NUM_ROOMS 4
 
-
 void occupation(DATASET data, int timestamp_number, int fd_write, pid_t pid);
 
 void write_to_fd (int id, uint32_t timestamp, const char* room,

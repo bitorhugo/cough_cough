@@ -7,10 +7,15 @@
 #include "from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.h"
 #include "from_N_processes_to_parent_to_M_processes/from_N_processes_to_parent_to_M_processes.h"
 #include "from_socket_to_file/from_socket_to_file.h"
+
+#include "from_N_threads_to_file/from_N_threads_to_file.h"
+
 #include "parser/parser.h"
 #include "occupation/occupation.h"
 #include "io/io.h"
 #include "socket/socket.h"
+
+
 
 int main(int argc, char** argv) {
 
@@ -28,8 +33,10 @@ int main(int argc, char** argv) {
         exit (EXIT_FAILURE);
     }
 
-    // child processes
-    int N_processes = atoi(argv[1]);
+    // child processes / number of threads
+
+    int N = (int)strtol(argv[1], NULL, 10);
+
     // input data pointer
     char *input_path = argv[2];
     // output data pointer
@@ -53,13 +60,12 @@ int main(int argc, char** argv) {
         exit (EXIT_FAILURE);
     }
 
-    //from_N_processes_to_file(fd_out, N_processes, data);
+    //from_N_processes_to_file(fd_out, N, data);
+    //from_N_processes_to_parent_to_file(fd_out, N, data);
+    //from_N_processes_to_parent_to_M_processes(N, data);
+    //from_parent_socket_to_file(fd_out, N, data);
 
-    //from_N_processes_to_parent_to_file(fd_out, N_processes, data);
-
-    from_N_processes_to_parent_to_M_processes(N_processes, data);
-
-    //from_parent_socket_to_file(fd_out, N_processes, data);
+    from_N_threads_to_file(N, data, fd_out);
 
 
     exit(EXIT_SUCCESS);

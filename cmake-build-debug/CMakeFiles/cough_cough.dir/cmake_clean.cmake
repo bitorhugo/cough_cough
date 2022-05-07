@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/cough_cough.dir/from_N_processes_to_file/from_N_processes_to_file.c.o"
   "CMakeFiles/cough_cough.dir/from_N_processes_to_parent_to_M_processes/from_N_processes_to_parent_to_M_processes.c.o"
   "CMakeFiles/cough_cough.dir/from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.c.o"
+  "CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.o"
   "CMakeFiles/cough_cough.dir/from_socket_to_file/from_socket_to_file.c.o"
   "CMakeFiles/cough_cough.dir/libs/io/io.c.o"
   "CMakeFiles/cough_cough.dir/libs/occupation/occupation.c.o"

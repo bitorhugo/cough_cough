@@ -224,6 +224,33 @@ from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.c.s
 .PHONY : from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.c.s
 
+from_N_threads_to_file/from_N_threads_to_file.o: from_N_threads_to_file/from_N_threads_to_file.c.o
+
+.PHONY : from_N_threads_to_file/from_N_threads_to_file.o
+
+# target to build an object file
+from_N_threads_to_file/from_N_threads_to_file.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.o
+.PHONY : from_N_threads_to_file/from_N_threads_to_file.c.o
+
+from_N_threads_to_file/from_N_threads_to_file.i: from_N_threads_to_file/from_N_threads_to_file.c.i
+
+.PHONY : from_N_threads_to_file/from_N_threads_to_file.i
+
+# target to preprocess a source file
+from_N_threads_to_file/from_N_threads_to_file.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.i
+.PHONY : from_N_threads_to_file/from_N_threads_to_file.c.i
+
+from_N_threads_to_file/from_N_threads_to_file.s: from_N_threads_to_file/from_N_threads_to_file.c.s
+
+.PHONY : from_N_threads_to_file/from_N_threads_to_file.s
+
+# target to generate assembly for a file
+from_N_threads_to_file/from_N_threads_to_file.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.s
+.PHONY : from_N_threads_to_file/from_N_threads_to_file.c.s
+
 from_socket_to_file/from_socket_to_file.o: from_socket_to_file/from_socket_to_file.c.o
 
 .PHONY : from_socket_to_file/from_socket_to_file.o
@@ -404,6 +431,9 @@ help:
 	@echo "... from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.o"
 	@echo "... from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.i"
 	@echo "... from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.s"
+	@echo "... from_N_threads_to_file/from_N_threads_to_file.o"
+	@echo "... from_N_threads_to_file/from_N_threads_to_file.i"
+	@echo "... from_N_threads_to_file/from_N_threads_to_file.s"
 	@echo "... from_socket_to_file/from_socket_to_file.o"
 	@echo "... from_socket_to_file/from_socket_to_file.i"
 	@echo "... from_socket_to_file/from_socket_to_file.s"

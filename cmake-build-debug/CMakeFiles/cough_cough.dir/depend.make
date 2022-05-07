@@ -19,6 +19,12 @@ CMakeFiles/cough_cough.dir/from_N_processes_to_parent_to_file/from_N_processes_t
 CMakeFiles/cough_cough.dir/from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.c.o: ../from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.c
 CMakeFiles/cough_cough.dir/from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.c.o: ../from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.h
 
+CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.o: ../libs/io/io.h
+CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.o: ../libs/occupation/occupation.h
+CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.o: ../libs/parser/parser.h
+CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.o: ../from_N_threads_to_file/from_N_threads_to_file.c
+CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.o: ../from_N_threads_to_file/from_N_threads_to_file.h
+
 CMakeFiles/cough_cough.dir/from_socket_to_file/from_socket_to_file.c.o: ../libs/io/io.h
 CMakeFiles/cough_cough.dir/from_socket_to_file/from_socket_to_file.c.o: ../libs/occupation/occupation.h
 CMakeFiles/cough_cough.dir/from_socket_to_file/from_socket_to_file.c.o: ../libs/parser/parser.h
@@ -53,6 +59,7 @@ CMakeFiles/cough_cough.dir/main.c.o: ../libs/socket/socket.h
 CMakeFiles/cough_cough.dir/main.c.o: ../from_N_processes_to_file/from_N_processes_to_file.h
 CMakeFiles/cough_cough.dir/main.c.o: ../from_N_processes_to_parent_to_M_processes/from_N_processes_to_parent_to_M_processes.h
 CMakeFiles/cough_cough.dir/main.c.o: ../from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.h
+CMakeFiles/cough_cough.dir/main.c.o: ../from_N_threads_to_file/from_N_threads_to_file.h
 CMakeFiles/cough_cough.dir/main.c.o: ../from_socket_to_file/from_socket_to_file.h
 CMakeFiles/cough_cough.dir/main.c.o: ../main.c
 
