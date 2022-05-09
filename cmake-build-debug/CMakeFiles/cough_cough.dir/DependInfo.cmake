@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/P_threads_N_threads/P_threads_N_threads.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.o"
   "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/from_N_processes_to_file/from_N_processes_to_file.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/from_N_processes_to_file/from_N_processes_to_file.c.o"
   "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/from_N_processes_to_parent_to_M_processes/from_N_processes_to_parent_to_M_processes.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/from_N_processes_to_parent_to_M_processes/from_N_processes_to_parent_to_M_processes.c.o"
   "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.c.o"
@@ -12,6 +13,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/io/io.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/libs/io/io.c.o"
   "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/occupation/occupation.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/libs/occupation/occupation.c.o"
   "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/parser/parser.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/libs/parser/parser.c.o"
+  "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/queue/queue.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/libs/queue/queue.c.o"
   "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/socket/socket.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/libs/socket/socket.c.o"
   "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/main.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/main.c.o"
   )

@@ -92,6 +92,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/P_threads_N_threads/P_threads_N_threads.c">
+			<Option target="cough_cough"/>
+		</Unit>
+		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/P_threads_N_threads/P_threads_N_threads.h">
+			<Option target="cough_cough"/>
+		</Unit>
 		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/from_N_processes_to_file/from_N_processes_to_file.c">
 			<Option target="cough_cough"/>
 		</Unit>
@@ -138,6 +144,12 @@
 			<Option target="cough_cough"/>
 		</Unit>
 		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/parser/parser.h">
+			<Option target="cough_cough"/>
+		</Unit>
+		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/queue/queue.c">
+			<Option target="cough_cough"/>
+		</Unit>
+		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/queue/queue.h">
 			<Option target="cough_cough"/>
 		</Unit>
 		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/socket/socket.c">

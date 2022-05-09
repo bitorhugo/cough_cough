@@ -67,6 +67,5 @@ int main(int argc, char** argv) {
 
     from_N_threads_to_file(N, data, fd_out);
 
-
     exit(EXIT_SUCCESS);
 }

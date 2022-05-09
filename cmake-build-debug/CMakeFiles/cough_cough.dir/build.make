@@ -207,6 +207,32 @@ CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.s: cm
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.s"
 	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/VitorHugo/dev/c/CLionProjects/cough_cough/from_N_threads_to_file/from_N_threads_to_file.c -o CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.s
 
+CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.o: CMakeFiles/cough_cough.dir/flags.make
+CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.o: ../P_threads_N_threads/P_threads_N_threads.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.o"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.o   -c /Users/VitorHugo/dev/c/CLionProjects/cough_cough/P_threads_N_threads/P_threads_N_threads.c
+
+CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.i"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/VitorHugo/dev/c/CLionProjects/cough_cough/P_threads_N_threads/P_threads_N_threads.c > CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.i
+
+CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.s"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/VitorHugo/dev/c/CLionProjects/cough_cough/P_threads_N_threads/P_threads_N_threads.c -o CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.s
+
+CMakeFiles/cough_cough.dir/libs/queue/queue.c.o: CMakeFiles/cough_cough.dir/flags.make
+CMakeFiles/cough_cough.dir/libs/queue/queue.c.o: ../libs/queue/queue.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/cough_cough.dir/libs/queue/queue.c.o"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/cough_cough.dir/libs/queue/queue.c.o   -c /Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/queue/queue.c
+
+CMakeFiles/cough_cough.dir/libs/queue/queue.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/cough_cough.dir/libs/queue/queue.c.i"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/queue/queue.c > CMakeFiles/cough_cough.dir/libs/queue/queue.c.i
+
+CMakeFiles/cough_cough.dir/libs/queue/queue.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/cough_cough.dir/libs/queue/queue.c.s"
+	/Library/Developer/CommandLineTools/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/queue/queue.c -o CMakeFiles/cough_cough.dir/libs/queue/queue.c.s
+
 # Object files for target cough_cough
 cough_cough_OBJECTS = \
 "CMakeFiles/cough_cough.dir/main.c.o" \
@@ -218,7 +244,9 @@ cough_cough_OBJECTS = \
 "CMakeFiles/cough_cough.dir/from_N_processes_to_parent_to_file/from_N_processes_to_parent_to_file.c.o" \
 "CMakeFiles/cough_cough.dir/from_N_processes_to_parent_to_M_processes/from_N_processes_to_parent_to_M_processes.c.o" \
 "CMakeFiles/cough_cough.dir/from_socket_to_file/from_socket_to_file.c.o" \
-"CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.o"
+"CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.o" \
+"CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.o" \
+"CMakeFiles/cough_cough.dir/libs/queue/queue.c.o"
 
 # External object files for target cough_cough
 cough_cough_EXTERNAL_OBJECTS =
@@ -233,9 +261,11 @@ cough_cough: CMakeFiles/cough_cough.dir/from_N_processes_to_parent_to_file/from_
 cough_cough: CMakeFiles/cough_cough.dir/from_N_processes_to_parent_to_M_processes/from_N_processes_to_parent_to_M_processes.c.o
 cough_cough: CMakeFiles/cough_cough.dir/from_socket_to_file/from_socket_to_file.c.o
 cough_cough: CMakeFiles/cough_cough.dir/from_N_threads_to_file/from_N_threads_to_file.c.o
+cough_cough: CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.o
+cough_cough: CMakeFiles/cough_cough.dir/libs/queue/queue.c.o
 cough_cough: CMakeFiles/cough_cough.dir/build.make
 cough_cough: CMakeFiles/cough_cough.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking C executable cough_cough"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking C executable cough_cough"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/cough_cough.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

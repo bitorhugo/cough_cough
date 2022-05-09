@@ -143,6 +143,33 @@ cough_cough/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/build
 .PHONY : cough_cough/fast
 
+P_threads_N_threads/P_threads_N_threads.o: P_threads_N_threads/P_threads_N_threads.c.o
+
+.PHONY : P_threads_N_threads/P_threads_N_threads.o
+
+# target to build an object file
+P_threads_N_threads/P_threads_N_threads.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.o
+.PHONY : P_threads_N_threads/P_threads_N_threads.c.o
+
+P_threads_N_threads/P_threads_N_threads.i: P_threads_N_threads/P_threads_N_threads.c.i
+
+.PHONY : P_threads_N_threads/P_threads_N_threads.i
+
+# target to preprocess a source file
+P_threads_N_threads/P_threads_N_threads.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.i
+.PHONY : P_threads_N_threads/P_threads_N_threads.c.i
+
+P_threads_N_threads/P_threads_N_threads.s: P_threads_N_threads/P_threads_N_threads.c.s
+
+.PHONY : P_threads_N_threads/P_threads_N_threads.s
+
+# target to generate assembly for a file
+P_threads_N_threads/P_threads_N_threads.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/P_threads_N_threads/P_threads_N_threads.c.s
+.PHONY : P_threads_N_threads/P_threads_N_threads.c.s
+
 from_N_processes_to_file/from_N_processes_to_file.o: from_N_processes_to_file/from_N_processes_to_file.c.o
 
 .PHONY : from_N_processes_to_file/from_N_processes_to_file.o
@@ -359,6 +386,33 @@ libs/parser/parser.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/libs/parser/parser.c.s
 .PHONY : libs/parser/parser.c.s
 
+libs/queue/queue.o: libs/queue/queue.c.o
+
+.PHONY : libs/queue/queue.o
+
+# target to build an object file
+libs/queue/queue.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/libs/queue/queue.c.o
+.PHONY : libs/queue/queue.c.o
+
+libs/queue/queue.i: libs/queue/queue.c.i
+
+.PHONY : libs/queue/queue.i
+
+# target to preprocess a source file
+libs/queue/queue.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/libs/queue/queue.c.i
+.PHONY : libs/queue/queue.c.i
+
+libs/queue/queue.s: libs/queue/queue.c.s
+
+.PHONY : libs/queue/queue.s
+
+# target to generate assembly for a file
+libs/queue/queue.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/libs/queue/queue.c.s
+.PHONY : libs/queue/queue.c.s
+
 libs/socket/socket.o: libs/socket/socket.c.o
 
 .PHONY : libs/socket/socket.o
@@ -422,6 +476,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... cough_cough"
+	@echo "... P_threads_N_threads/P_threads_N_threads.o"
+	@echo "... P_threads_N_threads/P_threads_N_threads.i"
+	@echo "... P_threads_N_threads/P_threads_N_threads.s"
 	@echo "... from_N_processes_to_file/from_N_processes_to_file.o"
 	@echo "... from_N_processes_to_file/from_N_processes_to_file.i"
 	@echo "... from_N_processes_to_file/from_N_processes_to_file.s"
@@ -446,6 +503,9 @@ help:
 	@echo "... libs/parser/parser.o"
 	@echo "... libs/parser/parser.i"
 	@echo "... libs/parser/parser.s"
+	@echo "... libs/queue/queue.o"
+	@echo "... libs/queue/queue.i"
+	@echo "... libs/queue/queue.s"
 	@echo "... libs/socket/socket.o"
 	@echo "... libs/socket/socket.i"
 	@echo "... libs/socket/socket.s"
