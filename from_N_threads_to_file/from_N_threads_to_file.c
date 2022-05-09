@@ -7,14 +7,16 @@
 #include <stdlib.h>
 #include "from_N_threads_to_file.h"
 
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 void sig_handler () {
     printf("Admission Count: %zu\n", admission_count);
     // loop the alarm every second
     alarm(1);
 }
 
-void *func (void* var) {
-    THREAD_DATA *td = (THREAD_DATA*)var;
+void *func (void* arg) {
+    THREAD_DATA *td = (THREAD_DATA*)arg;
 
     printf("THREAD: %zu\n", td->starting_point);
 
@@ -27,6 +29,7 @@ void *func (void* var) {
 
 void from_N_threads_to_file (int N_threads, DATASET data, int fd_out) {
 
+    // listen for alarm signal
     signal(SIGALRM, sig_handler);
 
     THREAD_DATA td_arr [N_threads];
@@ -90,8 +93,10 @@ void occupation_v2 (const THREAD_DATA *td, int line) {
 
     write_to_fd_v2 (td->fd_out, td->starting_point, current_ts, occupation);
 
+    // TODO: performance hit by putting threads on wait until mutex is unlocked
+    pthread_mutex_lock(&mutex);
     admission_count ++;
-
+    pthread_mutex_unlock(&mutex);
 }
 
 void write_to_fd_v2 (int fd_out, int thread_id,
