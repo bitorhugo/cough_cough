@@ -2,6 +2,8 @@
 // Created by Vitor Hugo on 06/05/2022.
 //
 
+#include <stdint.h>
+
 #include "parser/parser.h"
 #include "occupation/occupation.h"
 #include "io/io.h"

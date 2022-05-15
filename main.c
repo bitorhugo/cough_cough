@@ -9,6 +9,7 @@
 #include "from_socket_to_file/from_socket_to_file.h"
 
 #include "from_N_threads_to_file/from_N_threads_to_file.h"
+#include "P_threads_N_threads/P_threads_N_threads.h"
 
 #include "parser/parser.h"
 #include "occupation/occupation.h"
@@ -65,7 +66,8 @@ int main(int argc, char** argv) {
     //from_N_processes_to_parent_to_M_processes(N, data);
     //from_parent_socket_to_file(fd_out, N, data);
 
-    from_N_threads_to_file(N, data, fd_out);
+    //from_N_threads_to_file(N, data, fd_out);
+    P_threads_N_threads(N, N, data, fd_out);
 
     exit(EXIT_SUCCESS);
 }

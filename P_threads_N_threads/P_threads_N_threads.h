@@ -1,19 +1,35 @@
 //
 // Created by Vitor Hugo on 09/05/2022.
 //
+#include <parser/parser.h>
+#include "../from_N_threads_to_file/from_N_threads_to_file.h"
+
+#include <mach/semaphore.h>
+#include <mach/mach_init.h>
+#include <mach/task.h>
+#include <mach/mach_error.h>
+
+// avoid warning from casting to voidptr
+#define INT2VOIDP(i) (void*)(uintptr_t)(i)
+
+#define MAX 4080
+#define ARR_SZ 128
 
 #ifndef COUGH_COUGH_P_THREADS_N_THREADS_H
 #define COUGH_COUGH_P_THREADS_N_THREADS_H
 
-#include <parser/parser.h>
-#include "../from_N_threads_to_file/from_N_threads_to_file.h"
+typedef struct shared_dt {
+    char buffer[MAX][ARR_SZ];
+}SHARED_DT;
 
-QUEUE shared_queue = {};
+SHARED_DT dt;
+
+semaphore_t empty, full;
 
 void P_threads_N_threads(int p_threads, int n_threads, DATASET data, int);
 
 void occupation_v3 (const THREAD_DATA *td, int line);
 
-void write_to_shared_queue (int thread_id, size_t current_ts, int *occupation);
+void write_to_shared_dt (int thread_id, size_t current_ts, int *occupation);
 
 #endif //COUGH_COUGH_P_THREADS_N_THREADS_H

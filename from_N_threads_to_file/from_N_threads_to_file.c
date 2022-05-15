@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "from_N_threads_to_file.h"
-
+/*
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void sig_handler () {
@@ -71,10 +71,7 @@ void occupation_v2 (const THREAD_DATA *td, int line) {
 
     size_t current_ts = td->data->lines[line].areas_timestamps[0];
 
-    /* set an interval to search for occupation
-    uint32_t min_interval = current_ts - ONE_WEEK_UNIX_TS;
-    uint32_t max_interval = current_ts + ONE_WEEK_UNIX_TS;
-    */
+
 
     // cycle through timestamps prior to current
     for (size_t i = line; i > 0; i--) {
@@ -119,4 +116,4 @@ void write_to_fd_v2 (int fd_out, int thread_id,
         }
     }
 
-}
+}*/
