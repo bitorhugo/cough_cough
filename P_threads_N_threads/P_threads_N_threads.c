@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include "P_threads_N_threads.h"
 
+pthread_mutex_t alarm_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 int fill = 0;
@@ -38,13 +39,40 @@ _Noreturn void* consumer(void *args) {
         semaphore_wait(full);
         pthread_mutex_lock(&mutex);
         strcpy(buf, dt.buffer[use]);
-        use = (use + 1) % MAX;
+        use = (use + 1) % MAX_DT_SZ;
         if (writen(fd_out, buf, strlen(buf)) != strlen(buf)) {
             perror("write failed\n");
             exit(1);
         }
         pthread_mutex_unlock(&mutex);
         semaphore_signal(empty);
+    }
+}
+
+_Noreturn void* consumer_years(void *args) {
+
+    int sz = 64;
+    char *buf = NULL;
+
+    // consume timestamp to buf
+    for (int j = 0 ;; j++) {
+        semaphore_wait(full);
+        pthread_mutex_lock(&mutex);
+        buf = realloc(buf, sz * sizeof(char));
+        strcat(buf, dt.buffer[use]);
+        use = (use + 1) % MAX_DT_SZ;
+        pthread_mutex_unlock(&mutex);
+        semaphore_signal(empty);
+
+        /*
+        char *tmp = strstr(buf, "$");
+        memcpy(timestamp, (tmp + 1), 10);
+        uint32_t timestamp_value = (uint32_t) strtol(timestamp,
+                                                     NULL,
+                                                     10);
+        int year = (int) (timestamp_value / ONE_YEAR_UNIX_TS) + 1970;
+
+        printf("%d\n", year);*/
     }
 }
 
@@ -55,7 +83,7 @@ void P_threads_N_threads(int P_threads, int N_threads, DATASET data,
     kern_return_t ret_empty = semaphore_create(mach_task_self(),
                            &empty,
                            SYNC_POLICY_FIFO,
-                           MAX);
+                                               MAX_DT_SZ);
 
     kern_return_t ret_full = semaphore_create(mach_task_self(),
                                                &full,
@@ -75,7 +103,7 @@ void P_threads_N_threads(int P_threads, int N_threads, DATASET data,
     pthread_t p_threads[P_threads];
     pthread_t n_threads[N_threads];
 
-    // launch P threads
+    // launch producer threads
     for (size_t i = 0; i < P_threads; i++) {
         td_arr[i].starting_point = i;
         td_arr[i].data = &data;
@@ -91,12 +119,26 @@ void P_threads_N_threads(int P_threads, int N_threads, DATASET data,
         }
     }
 
-    // launch N threads
+    int num_years = n_years_dataset(data);
+    uint32_t first = first_ts(data);
+    int fds[num_years];
+    // open files for writing
+    for (int i = 0; i < num_years; i++) {
+        char filename[32] = "../data/year";
+        sprintf((filename + 12), "%d.txt", i);
+        int fd = open(filename,
+                          O_WRONLY | O_APPEND | O_TRUNC | O_CREAT,
+                          S_IXUSR | S_IWUSR | S_IRUSR);
+        if (fd < 0) exit(EXIT_FAILURE);
+        fds[i] = fd;
+    }
+
+    // launch consumer threads
     for (size_t i = 0; i < N_threads; i++) {
         int thread_check = pthread_create(&n_threads[i],
                                           NULL,
-                                          consumer,
-                                          INT2VOIDP(fd_out));
+                                          consumer_years,
+                                          fds);
         if (thread_check != 0) {
             perror("thread: ");
             exit(EXIT_FAILURE);
@@ -106,12 +148,12 @@ void P_threads_N_threads(int P_threads, int N_threads, DATASET data,
     // set an alarm for 1s
     alarm(1);
 
-    // wait for P all threads to finish
+    // wait for all producer threads to finish
     for (size_t i = 0; i < P_threads; i++) {
         pthread_join(p_threads[i], NULL);
     }
 
-    // wait for N all threads to finish
+    // wait for all consumer threads to finish
     for (size_t i = 0; i < N_threads; i++) {
         pthread_join(n_threads[i], NULL);
     }
@@ -145,9 +187,9 @@ void occupation_v3 (const THREAD_DATA *td, int line) {
     // write to shared data structure
     write_to_shared_dt (td->starting_point, current_ts, occupation);
 
-    /*pthread_mutex_lock(&mutex);
+    pthread_mutex_lock(&alarm_mutex);
     admission_count ++;
-    pthread_mutex_unlock(&mutex);*/
+    pthread_mutex_unlock(&alarm_mutex);
 }
 
 void write_to_shared_dt (int thread_id, size_t current_ts, int *occupation) {
@@ -169,7 +211,7 @@ void write_to_shared_dt (int thread_id, size_t current_ts, int *occupation) {
         semaphore_wait(empty);
         pthread_mutex_lock(&mutex); // obtain mutual exclusion
         strcpy(dt.buffer[fill], buffer);
-        fill = (fill + 1) % MAX; // update fill var
+        fill = (fill + 1) % MAX_DT_SZ; // update fill var
         pthread_mutex_unlock(&mutex); // release mutual exclusion
         semaphore_signal(full);
     }

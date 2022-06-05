@@ -10,6 +10,7 @@
 
 #include "from_N_threads_to_file/from_N_threads_to_file.h"
 #include "P_threads_N_threads/P_threads_N_threads.h"
+#include "map_reduce/map_reduce.h"
 
 #include "parser/parser.h"
 #include "occupation/occupation.h"
@@ -68,6 +69,7 @@ int main(int argc, char** argv) {
 
     //from_N_threads_to_file(N, data, fd_out);
     P_threads_N_threads(N, N, data, fd_out);
+    //map_reduce(N, N, &data, fd_out);
 
     exit(EXIT_SUCCESS);
 }

@@ -11,6 +11,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/cough_cough.dir/libs/queue/queue.c.o"
   "CMakeFiles/cough_cough.dir/libs/socket/socket.c.o"
   "CMakeFiles/cough_cough.dir/main.c.o"
+  "CMakeFiles/cough_cough.dir/map_reduce/map_reduce.c.o"
   "cough_cough"
   "cough_cough.pdb"
 )

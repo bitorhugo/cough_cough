@@ -13,4 +13,4 @@ add_executable(cough_cough main.c libs/occupation/occupation.c libs/occupation/o
         from_socket_to_file/from_socket_to_file.c from_socket_to_file/from_socket_to_file.h
         from_N_threads_to_file/from_N_threads_to_file.c from_N_threads_to_file/from_N_threads_to_file.h
         P_threads_N_threads/P_threads_N_threads.c P_threads_N_threads/P_threads_N_threads.h libs/queue/queue.c
-        libs/queue/queue.h)
+        libs/queue/queue.h map_reduce/map_reduce.c map_reduce/map_reduce.h)

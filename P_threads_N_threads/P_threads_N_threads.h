@@ -2,6 +2,7 @@
 // Created by Vitor Hugo on 09/05/2022.
 //
 #include <parser/parser.h>
+#include "io/io.h"
 #include "../from_N_threads_to_file/from_N_threads_to_file.h"
 
 #include <mach/semaphore.h>
@@ -12,14 +13,19 @@
 // avoid warning from casting to voidptr
 #define INT2VOIDP(i) (void*)(uintptr_t)(i)
 
-#define MAX 4080
+#define MAX_DT_SZ 100
 #define ARR_SZ 128
 
 #ifndef COUGH_COUGH_P_THREADS_N_THREADS_H
 #define COUGH_COUGH_P_THREADS_N_THREADS_H
 
+typedef struct consumer_data {
+    int *fds;
+    uint32_t first_ts;
+}CONSUMER_DATA;
+
 typedef struct shared_dt {
-    char buffer[MAX][ARR_SZ];
+    char buffer[MAX_DT_SZ][ARR_SZ];
 }SHARED_DT;
 
 SHARED_DT dt;

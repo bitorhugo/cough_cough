@@ -16,6 +16,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/queue/queue.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/libs/queue/queue.c.o"
   "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/libs/socket/socket.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/libs/socket/socket.c.o"
   "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/main.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/main.c.o"
+  "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/map_reduce/map_reduce.c" "/Users/VitorHugo/dev/c/CLionProjects/cough_cough/cmake-build-debug/CMakeFiles/cough_cough.dir/map_reduce/map_reduce.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
 

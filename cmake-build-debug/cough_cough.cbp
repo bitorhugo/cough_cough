@@ -161,6 +161,12 @@
 		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/main.c">
 			<Option target="cough_cough"/>
 		</Unit>
+		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/map_reduce/map_reduce.c">
+			<Option target="cough_cough"/>
+		</Unit>
+		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/map_reduce/map_reduce.h">
+			<Option target="cough_cough"/>
+		</Unit>
 		<Unit filename="/Users/VitorHugo/dev/c/CLionProjects/cough_cough/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

@@ -467,6 +467,33 @@ main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/main.c.s
 .PHONY : main.c.s
 
+map_reduce/map_reduce.o: map_reduce/map_reduce.c.o
+
+.PHONY : map_reduce/map_reduce.o
+
+# target to build an object file
+map_reduce/map_reduce.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/map_reduce/map_reduce.c.o
+.PHONY : map_reduce/map_reduce.c.o
+
+map_reduce/map_reduce.i: map_reduce/map_reduce.c.i
+
+.PHONY : map_reduce/map_reduce.i
+
+# target to preprocess a source file
+map_reduce/map_reduce.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/map_reduce/map_reduce.c.i
+.PHONY : map_reduce/map_reduce.c.i
+
+map_reduce/map_reduce.s: map_reduce/map_reduce.c.s
+
+.PHONY : map_reduce/map_reduce.s
+
+# target to generate assembly for a file
+map_reduce/map_reduce.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cough_cough.dir/build.make CMakeFiles/cough_cough.dir/map_reduce/map_reduce.c.s
+.PHONY : map_reduce/map_reduce.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -512,6 +539,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... map_reduce/map_reduce.o"
+	@echo "... map_reduce/map_reduce.i"
+	@echo "... map_reduce/map_reduce.s"
 .PHONY : help
 
 
