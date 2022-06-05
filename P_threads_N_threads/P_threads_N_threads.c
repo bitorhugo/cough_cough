@@ -12,6 +12,8 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 int fill = 0;
 int use = 0;
 
+char *buf = NULL;
+
 void sig_handler () {
     printf("Admission Count: %zu\n", admission_count);
     // loop the alarm every second
@@ -51,14 +53,13 @@ _Noreturn void* consumer(void *args) {
 
 _Noreturn void* consumer_years(void *args) {
 
-    int sz = 64;
-    char *buf = NULL;
+    int count = 4080;
 
     // consume timestamp to buf
     for (int j = 0 ;; j++) {
         semaphore_wait(full);
         pthread_mutex_lock(&mutex);
-        buf = realloc(buf, sz * sizeof(char));
+        buf = realloc(buf, count * sizeof(char)); // TODO: redo for eff.
         strcat(buf, dt.buffer[use]);
         use = (use + 1) % MAX_DT_SZ;
         pthread_mutex_unlock(&mutex);
@@ -153,6 +154,12 @@ void P_threads_N_threads(int P_threads, int N_threads, DATASET data,
         pthread_join(p_threads[i], NULL);
     }
 
+    // send signal to finish consumer threads
+    // ....
+
+    // write to fds consumer data
+    //write_to_fd_year();
+    
     // wait for all consumer threads to finish
     for (size_t i = 0; i < N_threads; i++) {
         pthread_join(n_threads[i], NULL);
