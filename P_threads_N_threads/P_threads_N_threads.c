@@ -61,11 +61,12 @@ _Noreturn void* consumer_years(void *args) {
         semaphore_wait(full);
         pthread_mutex_lock(&mutex);
         strcpy(buffer, dt.buffer[use]);
+        write_to_fd_v3 (buffer,cd);
         use = (use + 1) % MAX_DT_SZ;
         pthread_mutex_unlock(&mutex);
         semaphore_signal(empty);
 
-        write_to_fd_v3 (buffer,cd);
+
     }
 }
 
@@ -220,21 +221,21 @@ void write_to_shared_dt (int thread_id, size_t current_ts, int *occupation) {
 
 void write_to_fd_v3 (char *buffer, const CONSUMER_DATA *cd) {
 
-    char timestamp[16];
+    char timestamp[11];
 
     char *tmp = strstr(buffer, "$");
     memcpy(timestamp, (tmp + 1), 10);
     uint32_t timestamp_value = (uint32_t) strtol(timestamp,
                                                      NULL,
                                                      10);
+    if (timestamp_value == NOT_VALID_TIMESTAMP) {
+        printf("------------FOUND\n");
+    }
     int year = (int) (timestamp_value - cd->first_ts) / ONE_YEAR_UNIX_TS;
 
     // write to fd
-    pthread_mutex_lock(&mutex_fd);
     if (writen(cd->fds[year], buffer, strlen(buffer)) != strlen(buffer)) {
         perror("write failed\n");
         exit(1);
     }
-    pthread_mutex_unlock(&mutex_fd);
-
 }
