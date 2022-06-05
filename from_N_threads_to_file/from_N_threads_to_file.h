@@ -18,6 +18,7 @@ typedef struct thread_data {
     size_t starting_point;
     size_t jump_count;
     int fd_out;
+    int n_consumers;
 }THREAD_DATA;
 
 void from_N_threads_to_file (int N_threads, DATASET data, int  fd_out);

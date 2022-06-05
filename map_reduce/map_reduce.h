@@ -12,13 +12,32 @@
 #ifndef COUGH_COUGH_MAP_REDUCE_H
 #define COUGH_COUGH_MAP_REDUCE_H
 
-SHARED_DT *dts;
+typedef struct shared_dt_hash {
+    uint32_t admissions[MAX_DT_SZ];
+}SHARED_DT_HASH;
 
 void map_reduce (int N_producers,
                  int N_consumers,
-                 const DATASET *data,
+                 DATASET *data,
                  int fd_out);
 
+/**
+ * computes the hash to know to which buffer to send admission
+ * @param admission admission to hash
+ * @param N number of buffers
+ * @return id of buffer to send admission line
+ */
+int hash (uint32_t admission, int N);
 
+/**
+ * launch semaphores for shared buffers
+ * @param N number of buffers
+ */
+void launch_semaphores (int N);
+
+/**
+ * deallocates mem for dynamic dts used
+ */
+void free_map_reduce ();
 
 #endif //COUGH_COUGH_MAP_REDUCE_H

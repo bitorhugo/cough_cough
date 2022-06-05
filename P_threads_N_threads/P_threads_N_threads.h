@@ -13,7 +13,7 @@
 // avoid warning from casting to voidptr
 #define INT2VOIDP(i) (void*)(uintptr_t)(i)
 
-#define MAX_DT_SZ 100
+#define MAX_DT_SZ 128
 #define ARR_SZ 128
 
 #ifndef COUGH_COUGH_P_THREADS_N_THREADS_H
@@ -29,8 +29,6 @@ typedef struct shared_dt {
 }SHARED_DT;
 
 SHARED_DT dt;
-
-semaphore_t empty, full;
 
 void P_threads_N_threads(int p_threads, int n_threads, DATASET data, int);
 

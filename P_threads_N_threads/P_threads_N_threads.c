@@ -10,6 +10,8 @@ pthread_mutex_t alarm_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_fd = PTHREAD_MUTEX_INITIALIZER;
 
+semaphore_t empty, full;
+
 int fill = 0;
 int use = 0;
 
@@ -76,7 +78,7 @@ void P_threads_N_threads(int P_threads, int N_threads, DATASET data,
     kern_return_t ret_empty = semaphore_create(mach_task_self(),
                            &empty,
                            SYNC_POLICY_FIFO,
-                                               MAX_DT_SZ);
+                           MAX_DT_SZ);
 
     kern_return_t ret_full = semaphore_create(mach_task_self(),
                                                &full,
@@ -102,6 +104,7 @@ void P_threads_N_threads(int P_threads, int N_threads, DATASET data,
         td_arr[i].data = &data;
         td_arr[i].jump_count = P_threads;
         td_arr[i].fd_out = fd_out;
+
         int thread_check = pthread_create(&p_threads[i],
                                           NULL,
                                           producer,
@@ -136,6 +139,10 @@ void P_threads_N_threads(int P_threads, int N_threads, DATASET data,
                                           NULL,
                                           consumer_years,
                                           &cd);
+        /*int thread_check = pthread_create(&n_threads[i],
+                                          NULL,
+                                          consumer_years,
+                                          INT2VOIDPTR(fd_out);*/
         if (thread_check != 0) {
             perror("thread: ");
             exit(EXIT_FAILURE);
