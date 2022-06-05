@@ -38,4 +38,6 @@ void occupation_v3 (const THREAD_DATA *td, int line);
 
 void write_to_shared_dt (int thread_id, size_t current_ts, int *occupation);
 
+void write_to_fd_v3 (char *buffer, const CONSUMER_DATA *fds);
+
 #endif //COUGH_COUGH_P_THREADS_N_THREADS_H

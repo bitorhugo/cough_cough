@@ -1,18 +1,17 @@
+#include <__wctype.h>
 //
 // Created by Vitor Hugo on 09/05/2022.
 //
-#include <__wctype.h>
 #include <queue/queue.h>
 #include <pthread.h>
 #include "P_threads_N_threads.h"
 
 pthread_mutex_t alarm_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_fd = PTHREAD_MUTEX_INITIALIZER;
 
 int fill = 0;
 int use = 0;
-
-char *buf = NULL;
 
 void sig_handler () {
     printf("Admission Count: %zu\n", admission_count);
@@ -32,17 +31,17 @@ void* producer(void* args) {
     return NULL;
 }
 
-_Noreturn void* consumer(void *args) {
+__unused _Noreturn void* consumer(void *args) {
 
     size_t fd_out = (size_t)args;
 
-    char buf[128];
+    char buffer[128];
     for (int i = 0 ;; i++) {
         semaphore_wait(full);
         pthread_mutex_lock(&mutex);
-        strcpy(buf, dt.buffer[use]);
+        strcpy(buffer, dt.buffer[use]);
         use = (use + 1) % MAX_DT_SZ;
-        if (writen(fd_out, buf, strlen(buf)) != strlen(buf)) {
+        if (writen(fd_out, buffer, strlen(buffer)) != strlen(buffer)) {
             perror("write failed\n");
             exit(1);
         }
@@ -53,27 +52,20 @@ _Noreturn void* consumer(void *args) {
 
 _Noreturn void* consumer_years(void *args) {
 
-    int count = 4080;
+    CONSUMER_DATA *cd = (CONSUMER_DATA *)args;
+
+    char buffer [128];
 
     // consume timestamp to buf
     for (int j = 0 ;; j++) {
         semaphore_wait(full);
         pthread_mutex_lock(&mutex);
-        buf = realloc(buf, count * sizeof(char)); // TODO: redo for eff.
-        strcat(buf, dt.buffer[use]);
+        strcpy(buffer, dt.buffer[use]);
         use = (use + 1) % MAX_DT_SZ;
         pthread_mutex_unlock(&mutex);
         semaphore_signal(empty);
 
-        /*
-        char *tmp = strstr(buf, "$");
-        memcpy(timestamp, (tmp + 1), 10);
-        uint32_t timestamp_value = (uint32_t) strtol(timestamp,
-                                                     NULL,
-                                                     10);
-        int year = (int) (timestamp_value / ONE_YEAR_UNIX_TS) + 1970;
-
-        printf("%d\n", year);*/
+        write_to_fd_v3 (buffer,cd);
     }
 }
 
@@ -121,7 +113,6 @@ void P_threads_N_threads(int P_threads, int N_threads, DATASET data,
     }
 
     int num_years = n_years_dataset(data);
-    uint32_t first = first_ts(data);
     int fds[num_years];
     // open files for writing
     for (int i = 0; i < num_years; i++) {
@@ -134,12 +125,17 @@ void P_threads_N_threads(int P_threads, int N_threads, DATASET data,
         fds[i] = fd;
     }
 
+    // create consumer data
+    CONSUMER_DATA cd;
+    cd.fds = fds;
+    cd.first_ts = first_ts(data);
+
     // launch consumer threads
     for (size_t i = 0; i < N_threads; i++) {
         int thread_check = pthread_create(&n_threads[i],
                                           NULL,
                                           consumer_years,
-                                          fds);
+                                          &cd);
         if (thread_check != 0) {
             perror("thread: ");
             exit(EXIT_FAILURE);
@@ -157,9 +153,6 @@ void P_threads_N_threads(int P_threads, int N_threads, DATASET data,
     // send signal to finish consumer threads
     // ....
 
-    // write to fds consumer data
-    //write_to_fd_year();
-    
     // wait for all consumer threads to finish
     for (size_t i = 0; i < N_threads; i++) {
         pthread_join(n_threads[i], NULL);
@@ -222,5 +215,26 @@ void write_to_shared_dt (int thread_id, size_t current_ts, int *occupation) {
         pthread_mutex_unlock(&mutex); // release mutual exclusion
         semaphore_signal(full);
     }
+
+}
+
+void write_to_fd_v3 (char *buffer, const CONSUMER_DATA *cd) {
+
+    char timestamp[16];
+
+    char *tmp = strstr(buffer, "$");
+    memcpy(timestamp, (tmp + 1), 10);
+    uint32_t timestamp_value = (uint32_t) strtol(timestamp,
+                                                     NULL,
+                                                     10);
+    int year = (int) (timestamp_value - cd->first_ts) / ONE_YEAR_UNIX_TS;
+
+    // write to fd
+    pthread_mutex_lock(&mutex_fd);
+    if (writen(cd->fds[year], buffer, strlen(buffer)) != strlen(buffer)) {
+        perror("write failed\n");
+        exit(1);
+    }
+    pthread_mutex_unlock(&mutex_fd);
 
 }
