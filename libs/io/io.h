@@ -49,10 +49,25 @@ void from_parent_to_file (int fd_out, int fd_pipe);
  */
 ssize_t n_years_dataset (DATASET data);
 
+/**
+ * retrieves the first timestamp from data
+ * @param data data
+ * @return first unix timestamp
+ */
 uint32_t first_ts(DATASET data);
 
+/**
+ * sends data from the parent process to M child processes
+ * @param fd_read file descriptor to read from
+ * @param M number of M processes
+ * @param first_ts first timestamp in data
+ */
 void from_parent_to_M_processes (int fd_read, size_t M, uint32_t first_ts);
 
+/**
+ * handler for signal
+ * @param SIG signal received
+ */
 void handler (int SIG);
 
 #endif //COUGH_COUGH_IO_H

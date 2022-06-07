@@ -36,7 +36,6 @@ int main(int argc, char** argv) {
     }
 
     // child processes / number of threads
-
     int N = (int)strtol(argv[1], NULL, 10);
 
     // input data pointer

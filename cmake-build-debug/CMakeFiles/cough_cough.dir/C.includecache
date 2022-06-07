@@ -52,6 +52,16 @@ mach/task.h
 mach/mach_error.h
 -
 
+/Users/VitorHugo/dev/c/CLionProjects/cough_cough/from_N_threads_to_file/from_N_threads_to_file.c
+pthread.h
+-
+stdio.h
+-
+stdlib.h
+-
+from_N_threads_to_file.h
+/Users/VitorHugo/dev/c/CLionProjects/cough_cough/from_N_threads_to_file/from_N_threads_to_file.h
+
 /Users/VitorHugo/dev/c/CLionProjects/cough_cough/from_N_threads_to_file/from_N_threads_to_file.h
 stdint.h
 -

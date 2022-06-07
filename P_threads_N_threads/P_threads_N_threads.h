@@ -30,12 +30,34 @@ typedef struct shared_dt {
 
 SHARED_DT dt;
 
+/**
+ * producer consumer paradigm
+ * @param p_threads number of producer threads
+ * @param n_threads number of consumer threads
+ * @param data data
+ */
 void P_threads_N_threads(int p_threads, int n_threads, DATASET data, int);
 
+/**
+ * calculates occupation
+ * @param td thread data
+ * @param line line number
+ */
 void occupation_v3 (const THREAD_DATA *td, int line);
 
+/**
+ * producer threads write to a shared array
+ * @param thread_id thread id
+ * @param current_ts current unix timestamp
+ * @param occupation number of people in the room
+ */
 void write_to_shared_dt (int thread_id, size_t current_ts, int *occupation);
 
-void write_to_fd_v3 (char *buffer, const CONSUMER_DATA *fds);
+/**
+ * consumer threads write to file
+ * @param buffer data
+ * @param cd data
+ */
+void write_to_fd_v3 (char *buffer, const CONSUMER_DATA *cd);
 
 #endif //COUGH_COUGH_P_THREADS_N_THREADS_H

@@ -90,7 +90,6 @@ void occupation_v2 (const THREAD_DATA *td, int line) {
 
     write_to_fd_v2 (td->fd_out, td->starting_point, current_ts, occupation);
 
-    // TODO: performance hit by putting threads on wait until mutex is unlocked
     pthread_mutex_lock(&mutex);
     admission_count ++;
     pthread_mutex_unlock(&mutex);
