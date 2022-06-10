@@ -43,12 +43,12 @@ __unused _Noreturn void* consumer(void *args) {
         pthread_mutex_lock(&mutex);
         strcpy(buffer, dt.buffer[use]);
         use = (use + 1) % MAX_DT_SZ;
+        pthread_mutex_unlock(&mutex);
+        semaphore_signal(empty);
         if (writen(fd_out, buffer, strlen(buffer)) != strlen(buffer)) {
             perror("write failed\n");
             exit(1);
         }
-        pthread_mutex_unlock(&mutex);
-        semaphore_signal(empty);
     }
 }
 

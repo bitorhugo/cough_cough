@@ -71,8 +71,6 @@ void occupation_v2 (const THREAD_DATA *td, int line) {
 
     size_t current_ts = td->data->lines[line].areas_timestamps[0];
 
-
-
     // cycle through timestamps prior to current
     for (size_t i = line; i > 0; i--) {
 

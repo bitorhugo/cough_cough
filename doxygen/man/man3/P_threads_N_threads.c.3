@@ -1,0 +1,147 @@
+.TH "P_threads_N_threads/P_threads_N_threads.c" 3 "Tue Jun 7 2022" "cough_cough" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+P_threads_N_threads/P_threads_N_threads.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <__wctype\&.h>\fP
+.br
+\fC#include <queue/queue\&.h>\fP
+.br
+\fC#include <pthread\&.h>\fP
+.br
+\fC#include 'P_threads_N_threads\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBsig_handler\fP ()"
+.br
+.ti -1c
+.RI "void * \fBproducer\fP (void *args)"
+.br
+.ti -1c
+.RI "__unused _Noreturn void * \fBconsumer\fP (void *args)"
+.br
+.ti -1c
+.RI "_Noreturn void * \fBconsumer_years\fP (void *args)"
+.br
+.ti -1c
+.RI "void \fBP_threads_N_threads\fP (int P_threads, int N_threads, \fBDATASET\fP data, int fd_out)"
+.br
+.ti -1c
+.RI "void \fBoccupation_v3\fP (const \fBTHREAD_DATA\fP *td, int \fBline\fP)"
+.br
+.ti -1c
+.RI "void \fBwrite_to_shared_dt\fP (int thread_id, size_t current_ts, int *\fBoccupation\fP)"
+.br
+.ti -1c
+.RI "void \fBwrite_to_fd_v3\fP (char *buffer, const \fBCONSUMER_DATA\fP *cd)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "pthread_mutex_t \fBalarm_mutex\fP = PTHREAD_MUTEX_INITIALIZER"
+.br
+.ti -1c
+.RI "pthread_mutex_t \fBmutex\fP = PTHREAD_MUTEX_INITIALIZER"
+.br
+.ti -1c
+.RI "pthread_mutex_t \fBmutex_fd\fP = PTHREAD_MUTEX_INITIALIZER"
+.br
+.ti -1c
+.RI "semaphore_t \fBempty\fP"
+.br
+.ti -1c
+.RI "semaphore_t \fBfull\fP"
+.br
+.ti -1c
+.RI "int \fBfill\fP = 0"
+.br
+.ti -1c
+.RI "int \fBuse\fP = 0"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "__unused _Noreturn void* consumer (void * args)"
+
+.SS "_Noreturn void* consumer_years (void * args)"
+
+.SS "void occupation_v3 (const \fBTHREAD_DATA\fP * td, int line)"
+calculates occupation 
+.PP
+\fBParameters:\fP
+.RS 4
+\fItd\fP thread data 
+.br
+\fIline\fP line number 
+.RE
+.PP
+
+.SS "void P_threads_N_threads (int p_threads, int n_threads, \fBDATASET\fP data, int)"
+producer consumer paradigm 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIp_threads\fP number of producer threads 
+.br
+\fIn_threads\fP number of consumer threads 
+.br
+\fIdata\fP data 
+.RE
+.PP
+
+.SS "void* producer (void * args)"
+
+.SS "void sig_handler ()"
+
+.SS "void write_to_fd_v3 (char * buffer, const \fBCONSUMER_DATA\fP * cd)"
+consumer threads write to file 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIbuffer\fP data 
+.br
+\fIcd\fP data 
+.RE
+.PP
+
+.SS "void write_to_shared_dt (int thread_id, size_t current_ts, int * occupation)"
+producer threads write to a shared array 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIthread_id\fP thread id 
+.br
+\fIcurrent_ts\fP current unix timestamp 
+.br
+\fIoccupation\fP number of people in the room 
+.RE
+.PP
+
+.SH "Variable Documentation"
+.PP 
+.SS "pthread_mutex_t alarm_mutex = PTHREAD_MUTEX_INITIALIZER"
+
+.SS "semaphore_t empty"
+
+.SS "int fill = 0"
+
+.SS "semaphore_t full"
+
+.SS "pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER"
+
+.SS "pthread_mutex_t mutex_fd = PTHREAD_MUTEX_INITIALIZER"
+
+.SS "int use = 0"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for cough_cough from the source code\&.

@@ -67,8 +67,8 @@ int main(int argc, char** argv) {
     //from_parent_socket_to_file(fd_out, N, data);
 
     //from_N_threads_to_file(N, data, fd_out);
-    //P_threads_N_threads(N, N, data, fd_out);
-    map_reduce(N, N, &data, fd_out);
+    P_threads_N_threads(0, 5, data, fd_out);
+    //map_reduce(N, N, &data, fd_out);
 
     exit(EXIT_SUCCESS);
 }

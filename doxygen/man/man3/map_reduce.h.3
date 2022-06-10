@@ -1,0 +1,140 @@
+.TH "map_reduce/map_reduce.h" 3 "Tue Jun 7 2022" "cough_cough" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+map_reduce/map_reduce.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <parser/parser\&.h>\fP
+.br
+\fC#include <mach/semaphore\&.h>\fP
+.br
+\fC#include <mach/mach_init\&.h>\fP
+.br
+\fC#include <mach/task\&.h>\fP
+.br
+\fC#include <mach/mach_error\&.h>\fP
+.br
+\fC#include '\&.\&./P_threads_N_threads/P_threads_N_threads\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBshared_dt_hash\fP"
+.br
+.ti -1c
+.RI "struct \fBconsumer_hash_data\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBshared_dt_hash\fP \fBSHARED_DT_HASH\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBconsumer_hash_data\fP \fBCONSUMER_HASH_DATA\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBmap_reduce\fP (int N_producers, int N_consumers, \fBDATASET\fP *data, int fd_out)"
+.br
+.ti -1c
+.RI "int \fBhash\fP (uint32_t admission, int N)"
+.br
+.ti -1c
+.RI "void \fBlaunch_semaphores\fP (int N)"
+.br
+.ti -1c
+.RI "void \fBfree_map_reduce\fP ()"
+.br
+.ti -1c
+.RI "void \fBoccupation_v4\fP (uint32_t admission_line, const \fBCONSUMER_HASH_DATA\fP *chd)"
+.br
+.ti -1c
+.RI "void \fBH_write_to_fd\fP (const \fBCONSUMER_HASH_DATA\fP *chd, uint32_t admission_line, int *\fBoccupation\fP)"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBconsumer_hash_data\fP \fBCONSUMER_HASH_DATA\fP"
+
+.SS "typedef struct \fBshared_dt_hash\fP \fBSHARED_DT_HASH\fP"
+
+.SH "Function Documentation"
+.PP 
+.SS "void free_map_reduce ()"
+deallocates mem for dynamic dts used 
+.SS "void H_write_to_fd (const \fBCONSUMER_HASH_DATA\fP * chd, uint32_t admission_line, int * occupation)"
+writes to file the reduced solution 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIchd\fP data 
+.br
+\fIadmission_line\fP line number 
+.br
+\fIoccupation\fP number of people in the room 
+.RE
+.PP
+
+.SS "int hash (uint32_t admission, int N)"
+computes the hash to know to which buffer to send admission 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIadmission\fP admission to hash 
+.br
+\fIN\fP number of buffers 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+id of buffer to send admission line 
+.RE
+.PP
+
+.SS "void launch_semaphores (int N)"
+launch semaphores for shared buffers 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIN\fP number of buffers 
+.RE
+.PP
+
+.SS "void map_reduce (int N_producers, int N_consumers, \fBDATASET\fP * data, int fd_out)"
+use of map reduce paradigm 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIN_producers\fP number of producer threads 
+.br
+\fIN_consumers\fP number of reducer threads 
+.br
+\fIdata\fP data to reduce 
+.br
+\fIfd_out\fP file descriptor to write to 
+.RE
+.PP
+
+.SS "void occupation_v4 (uint32_t admission_line, const \fBCONSUMER_HASH_DATA\fP * chd)"
+calculates the occupation given the line number and data 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIadmission_line\fP line number 
+.br
+\fIchd\fP data 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for cough_cough from the source code\&.

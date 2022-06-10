@@ -1,0 +1,103 @@
+.TH "from_N_threads_to_file/from_N_threads_to_file.h" 3 "Tue Jun 7 2022" "cough_cough" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+from_N_threads_to_file/from_N_threads_to_file.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdint\&.h>\fP
+.br
+\fC#include 'parser/parser\&.h'\fP
+.br
+\fC#include 'occupation/occupation\&.h'\fP
+.br
+\fC#include 'io/io\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBthread_data\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBthread_data\fP \fBTHREAD_DATA\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBfrom_N_threads_to_file\fP (int N_threads, \fBDATASET\fP data, int fd_out)"
+.br
+.ti -1c
+.RI "void \fBoccupation_v2\fP (const \fBTHREAD_DATA\fP *td, int \fBline\fP)"
+.br
+.ti -1c
+.RI "void \fBwrite_to_fd_v2\fP (int fd_out, int pthread_id, size_t current_ts, int *\fBoccupation\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "size_t \fBadmission_count\fP"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBthread_data\fP \fBTHREAD_DATA\fP"
+
+.SH "Function Documentation"
+.PP 
+.SS "void from_N_threads_to_file (int N_threads, \fBDATASET\fP data, int fd_out)"
+N threads write to file 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIN_threads\fP number of threads 
+.br
+\fIdata\fP data 
+.br
+\fIfd_out\fP file descriptor to write to 
+.RE
+.PP
+
+.SS "void occupation_v2 (const \fBTHREAD_DATA\fP * td, int line)"
+calculates the occupation 
+.PP
+\fBParameters:\fP
+.RS 4
+\fItd\fP data 
+.br
+\fIline\fP line number 
+.RE
+.PP
+
+.SS "void write_to_fd_v2 (int fd_out, int pthread_id, size_t current_ts, int * occupation)"
+writes to files descriptor 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIfd_out\fP file descriptor 
+.br
+\fIpthread_id\fP thread id 
+.br
+\fIcurrent_ts\fP current timestamp 
+.br
+\fIoccupation\fP number of people 
+.RE
+.PP
+
+.SH "Variable Documentation"
+.PP 
+.SS "size_t admission_count"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for cough_cough from the source code\&.

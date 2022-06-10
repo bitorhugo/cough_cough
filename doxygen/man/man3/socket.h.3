@@ -1,0 +1,91 @@
+.TH "libs/socket/socket.h" 3 "Tue Jun 7 2022" "cough_cough" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+libs/socket/socket.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'io/io\&.h'\fP
+.br
+\fC#include <sys/socket\&.h>\fP
+.br
+\fC#include <libproc\&.h>\fP
+.br
+\fC#include <unistd\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <string\&.h>\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBLISTENQ\fP   5"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBcreate_socket_client\fP (char *socket_path)"
+.br
+.ti -1c
+.RI "int \fBcreate_socket_server\fP (char *socket_path)"
+.br
+.ti -1c
+.RI "void \fBfrom_socket_to_file\fP (int listenfd, int fd_out)"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define LISTENQ   5"
+
+.SH "Function Documentation"
+.PP 
+.SS "int create_socket_client (char * socket_path)"
+creates a socket client 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIsocket_path\fP socket path 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+descriptor referencing the socket created 
+.RE
+.PP
+
+.SS "int create_socket_server (char * socket_path)"
+creates a socket server 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIsocket_path\fP socket path 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+file descriptor referencing the socket created 
+.RE
+.PP
+
+.SS "void from_socket_to_file (int listenfd, int fd_out)"
+writes the content received by the socket to file 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIlistenfd\fP file descriptor referencing the socket 
+.br
+\fIfd_out\fP file to write to 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for cough_cough from the source code\&.

@@ -5,8 +5,6 @@
 #include <pthread.h>
 #include "map_reduce.h"
 
-
-
 semaphore_t *e = NULL;
 semaphore_t *f = NULL;
 
