@@ -35,6 +35,7 @@ int main(int argc, char** argv) {
         exit (EXIT_FAILURE);
     }
 
+    
     // child processes / number of threads
     int N = (int)strtol(argv[1], NULL, 10);
 
